@@ -4,7 +4,8 @@ include
 lib
 lib64
 share
-data/*/*
-meta_data/*
 pyvenv.cfg
-itrs/*
+
+data/*/*.csv
+itrs/*.csv
+meta_data/*.txt
