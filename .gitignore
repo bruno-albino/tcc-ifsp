@@ -9,3 +9,7 @@ pyvenv.cfg
 data/*/*.csv
 itrs/*.csv
 meta_data/*.txt
+.ipynb_checkpoints/
+*.ipynb
+data/processed/.ipynb_checkpoints/
+etc/
