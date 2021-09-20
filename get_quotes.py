@@ -28,10 +28,13 @@ def get_quotes():
   new_df_quotes['Date'] = new_df_quotes['Date'].apply(fix_date)
 
   # TODO: Change to save on mongo
-  df_quotes = pd.read_csv('./data/processed/fresh-quotes.csv')
-  df_quotes = df_quotes.append(new_df_quotes)
-  path = f'data/processed/fresh-quotes.csv'
-  df_quotes.to_csv(path, index=False)
+  path = f'./data/processed/quotes.csv'
+  try:
+    df_quotes = pd.read_csv(path)
+    df_quotes = df_quotes.append(new_df_quotes)
+    df_quotes.to_csv(path, index=False)
+  except FileNotFoundError:
+    new_df_quotes.to_csv(path, index=False)
 
 if __name__ == '__main__':
     get_quotes()

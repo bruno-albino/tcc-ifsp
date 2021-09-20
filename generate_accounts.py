@@ -1,13 +1,12 @@
 # CRON JOB TO RUN EVERY YEAR
-
 from main import load_itr
 import download
 from datetime import date
-# import pandas as pd
+import pandas as pd
 
 data_atual = date.today().year
 
-def main():
+def download_account_dictionary():
   download.download_itrs(str(data_atual))
   df = load_itr('./itrs')
 
@@ -20,10 +19,6 @@ def main():
       .str.decode('utf-8')
   accounts = accounts.sort_values('CD_CONTA')
   accounts = accounts.drop_duplicates(keep='first', ignore_index=True)
-  # df = pd.DataFrame(accounts)
-  # df.set_index('CD_CONTA', inplace=True)
-  # df.to_csv('./data/processed/accounts.csv')
-  # mongodb.save(accounts)
-
-if __name__ == '__main__':
-    main()
+  df = pd.DataFrame(accounts)
+  df.set_index('CD_CONTA', inplace=True)
+  df.to_csv('./data/processed/accounts.csv')

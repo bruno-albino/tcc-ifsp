@@ -1,8 +1,7 @@
-from pathlib import Path
 import numpy as np
 import pandas as pd
-import yfinance as yf
 import process_indicators 
+from pathlib import Path
 from tqdm import tqdm
 
 def choose_company_tickers(tickers):
@@ -62,7 +61,7 @@ def clean_itr(df):
                         'CD_CONTA']).last().reset_index()
 
     # Remove unused columns
-    temp = temp[['CNPJ_CIA', 'DT_REFER', 'DENOM_CIA', 'CD_CVM',
+    temp = temp[['CNPJ_CIA', 'TICKER', 'DT_REFER', 'DENOM_CIA', 'CD_CVM',
                  'CD_CONTA', 'VL_CONTA']]
 
     # (Hopefully) Remove the remaining duplicated rows
@@ -70,77 +69,22 @@ def clean_itr(df):
 
     return temp
 
-
-def extract_features_itr(df):
-    agg = df.groupby(['DT_REFER', 'CD_CVM'])[['CNPJ_CIA', 'DENOM_CIA']].last()
-    features = df.pivot_table(
-        index=['DT_REFER', 'CD_CVM'],
-        columns='CD_CONTA',
-        values='VL_CONTA'
-        # aggfunc='last'
-    )
-
-    return pd.concat([agg, features], axis=1).reset_index()\
-                                             .rename_axis(None, axis=1)
-
-
 def name_to_ticker(name: str):
     try:
         return mapper[name]
     except KeyError:
         return np.nan
 
-
-def add_tickers(df):
-    temp = df.copy()
-    temp.insert(
-        loc=temp.columns.get_loc('DENOM_CIA') + 1,
-        column='TICKER',
-        value=temp['DENOM_CIA'].apply(name_to_ticker)
-    )
-    return temp
-
 def process():
     path = 'itrs'
     processed_path = 'data/processed'
     df = load_itr(path)
-    
-    # # grab years range
-    # years = sorted(df['DT_REFER'].unique().tolist())
-    # start_year = years[0].split('-')[0]
-    # end_year = years[-1].split('-')[0]
-    # processed_range_file_end = f'-{start_year}-{end_year}.csv'
-    # processed_range_file_end = f'.csv'
-    
-    # save joined data
-    # print('Saving joined data...')
-    # path = f'{processed_path}/01-joined{processed_range_file_end}'
-    # df.to_csv(path)
-    # print(f'Joined ITR data saved in `{path}` !')
 
-    # save accounts dictionary
-    print('Cleaning data...')
     df_clean = clean_itr(df)
-    df_clean.set_index('CD_CONTA', inplace=True)
     path = f'{processed_path}/processed.csv'
     df_clean.to_csv(path)
     print(f'Clean data saved in {path} !')
-    process_indicators.process_indicators(df_clean)
-    
-
-    # print('Extracting features...')
-    # df_features = extract_features_itr(df_clean)
-    # path = f'{processed_path}/03-feature{processed_range_file_end}'
-    # df_clean.to_csv(path)
-    # print(f'Feature data saved in {path} !')
-
-    # # save tickers
-    # print('Getting tickers...')
-    # df_tickers = add_tickers(df_features)
-    # print('Saving tickers data...')
-    # path = f'{processed_path}/04-tickers{processed_range_file_end}'
-    # df_tickers.to_csv(path)
-    # print(f'Ticker data saved in `{path}` !')
+    process_indicators.process_indicators()
 
 if __name__ == '__main__':
     process()
