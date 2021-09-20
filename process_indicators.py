@@ -1,5 +1,4 @@
 import pandas as pd
-df_quotes = pd.read_csv('./data/processed/fresh-quotes.csv')
 
 def get_account_value_by_code(df, cd_account):
   try:
@@ -9,6 +8,7 @@ def get_account_value_by_code(df, cd_account):
     return 0
 
 def get_acao_by_defer_date(df):
+  df_quotes = pd.read_csv('./data/processed/quotes.csv')
   date = df['DT_REFER'].max()
   ticker = list(df['TICKER'])[0]
   selecao_ticker = df_quotes['TICKER'] == ticker
