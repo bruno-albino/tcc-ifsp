@@ -1,4 +1,5 @@
 # CRON_TO_RUN_EVERY_DAY_1_AM = '0 1 * * *'
+from utils import get_itrs_path, get_quotes_path
 from main import load_itr
 import download
 import datetime
@@ -13,7 +14,7 @@ def fix_date(date):
 
 def get_quotes():
   download.download_itrs(str(end_date.year)) # download fresh new itrs
-  df = load_itr('./itrs')
+  df = load_itr(get_itrs_path())
   new_df_quotes = pd.DataFrame()
 
   for ticker in df['TICKER'].unique():
@@ -28,7 +29,7 @@ def get_quotes():
   new_df_quotes['Date'] = new_df_quotes['Date'].apply(fix_date)
 
   # TODO: Change to save on mongo
-  path = f'./data/processed/quotes.csv'
+  path = get_quotes_path()
   try:
     df_quotes = pd.read_csv(path)
     df_quotes = df_quotes.append(new_df_quotes)

@@ -1,3 +1,4 @@
+from utils import get_itr_names, get_itrs_path, get_processed_path
 import numpy as np
 import pandas as pd
 import process_indicators 
@@ -27,20 +28,21 @@ mapper = df_b3_instruments.groupby(['CrpnNm'])['TckrSymb']\
     .apply(choose_company_tickers)\
     .to_dict()
 
-def load_itr(path):
-    itr_names = ['BPA', 'BPP', 'DRE', 'DFC_MI', 'DVA']
-    dir = Path(path)
+def load_itr():
+    itr_names = get_itr_names()
+    itr_path = get_itrs_path()
+    dir = Path(itr_path)
     df = pd.DataFrame()
     print('Loading data...')
 
-    files_to_read = [f for f in list(dir.glob('itr_cia_aberta_*_con_*.csv'))
+    files_to_read = [f for f in list(dir.glob('itr_cia_aberta_*_ind_*.csv'))
                      if any(itr in str(f) for itr in itr_names)]
 
     for file in tqdm(files_to_read,
                      dynamic_ncols=True):
         df = df.append(pd.read_csv(file, sep=';', encoding='latin1'))
 
-    df = df[df['ORDEM_EXERC'].eq('ÚLTIMO')].reset_index(drop=True)
+    # df = df[df['ORDEM_EXERC'].eq('ÚLTIMO')].reset_index(drop=True)
     df['TICKER'] = df['DENOM_CIA'].apply(name_to_ticker)
     return df
 
@@ -76,14 +78,13 @@ def name_to_ticker(name: str):
         return np.nan
 
 def process():
-    path = 'itrs'
-    processed_path = 'data/processed'
-    df = load_itr(path)
+    print('Start process ITRs')
+    processed_path = get_processed_path()
+    df = load_itr()
 
     df_clean = clean_itr(df)
-    path = f'{processed_path}/processed.csv'
-    df_clean.to_csv(path)
-    print(f'Clean data saved in {path} !')
+    df_clean.to_csv(processed_path)
+    print(f'Clean data saved in {processed_path} !')
     process_indicators.process_indicators()
 
 if __name__ == '__main__':

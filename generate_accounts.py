@@ -8,7 +8,7 @@ data_atual = date.today().year
 
 def download_account_dictionary():
   download.download_itrs(str(data_atual))
-  df = load_itr('./itrs')
+  df = load_itr()
 
   # Extract account names
   accounts = df[['CD_CONTA', 'DS_CONTA']].copy()

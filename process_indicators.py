@@ -1,3 +1,4 @@
+from utils import get_indicators_path, get_processed_path, get_quotes_path
 import pandas as pd
 
 def get_account_value_by_code(df, cd_account):
@@ -8,7 +9,7 @@ def get_account_value_by_code(df, cd_account):
     return 0
 
 def get_acao_by_defer_date(df):
-  df_quotes = pd.read_csv('./data/processed/quotes.csv')
+  df_quotes = pd.read_csv(get_quotes_path())
   date = df['DT_REFER'].max()
   ticker = list(df['TICKER'])[0]
   selecao_ticker = df_quotes['TICKER'] == ticker
@@ -126,6 +127,7 @@ def get_p_ativo_circulante_liquido(df):
   except ZeroDivisionError:
     vl_ativos_circulantes_liq_por_acao = vl_ativo_circulante
 
+  print(vl_ativo_circulante)
   vl_p_ativos_circulantes_liq = acao_valor / vl_ativos_circulantes_liq_por_acao
   return vl_p_ativos_circulantes_liq
 
@@ -413,7 +415,8 @@ def get_passivos_ativos(df):
 
 
 def process_indicators():
-  path = f'./data/processed/processed.csv'
+  print('Start process indicators')
+  path = get_processed_path()
   df = pd.read_csv(path)
   df.dropna(inplace=True)
 
@@ -459,4 +462,4 @@ def process_indicators():
       }
       df_indicators = df_indicators.append(row, ignore_index=True)
 
-  df_indicators.to_csv('./data/processed/indicators.csv')
+  df_indicators.to_csv(get_indicators_path())

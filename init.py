@@ -3,6 +3,7 @@
 # 2 - DOWNLOAD ALL THE QUOTES FROM 2015 UNTIL NOW
 # 3 - PROCESS THE INDICATORS TO ALL COMPANIES
 import datetime
+from utils import get_itrs_path, get_quotes_path
 import pandas as pd
 import yfinance as yf
 from download import download_itrs
@@ -14,7 +15,7 @@ def fix_date(date):
 
 def get_quotes_from_dates(start_date, end_date):
   download_itrs(str(end_date.year))
-  df = load_itr('./itrs')
+  df = load_itr()
   new_df_quotes = pd.DataFrame()
 
   for ticker in df['TICKER'].unique():
@@ -27,7 +28,7 @@ def get_quotes_from_dates(start_date, end_date):
   new_df_quotes = new_df_quotes.dropna()
   new_df_quotes['Date'] = new_df_quotes['Date'].apply(fix_date)
 
-  path = f'./data/processed/quotes.csv'
+  path = get_quotes_path()
   try:
     df_quotes = pd.read_csv(path)
     df_quotes = df_quotes.append(new_df_quotes)
@@ -37,14 +38,21 @@ def get_quotes_from_dates(start_date, end_date):
 
 
 def init():
-  download_account_dictionary()
+  # print('Downloading account dictionary...')
+  # first_year = 2015
+  # current_year = datetime.datetime.now().year
+  # years = [first_year]
 
-  years = [2015, 2016, 2017, 2018, 2019, 2020, 2021]
-  for year in years:
-    start_date = datetime.datetime.now().date().replace(year=year - 1, month=12, day=31)
-    end_date = datetime.datetime.now().date().replace(year=year, month=12, day=31)
-    get_quotes_from_dates(start_date, end_date)
-
+  # while (len(years) < (current_year - first_year + 1)):
+  #   years.append((years[-1] + 1))
+  
+  # # download_account_dictionary()
+  # print(f'Start downloading quotes from {years[0]} to {years[-1]}')
+  # for year in years:
+  #   start_date = datetime.datetime.now().date().replace(year=year - 1, month=12, day=31)
+  #   end_date = datetime.datetime.now().date().replace(year=year, month=12, day=31)
+  #   get_quotes_from_dates(start_date, end_date)
+  print('Download quotes finished')
   process()
 
 
