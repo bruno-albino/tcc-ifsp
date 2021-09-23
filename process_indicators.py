@@ -3,7 +3,11 @@ import pandas as pd
 
 def get_account_value_by_code(df, cd_account):
   try:
-    return float(df.loc[cd_account]['VL_CONTA']) * -1
+    result = float(df.loc[cd_account]['VL_CONTA'])
+    if result < 0:
+      result = result * -1
+
+    return result
   except KeyError:
     print(f'Account not found: {cd_account}')
     return 0
@@ -14,10 +18,10 @@ def get_acao_by_defer_date(df):
   ticker = list(df['TICKER'])[0]
   selecao_ticker = df_quotes['TICKER'] == ticker
   selecao_date = df_quotes['Date'] == date
-  df_quotes_ticker_date = df_quotes[selecao_ticker & selecao_date]
+  df_quotes_ticker_date = df_quotes[selecao_ticker & selecao_date].reset_index()
 
   acao_valor, acao_volume = 0.0, 0.0
-
+  print(df_quotes_ticker_date)
   if not df_quotes_ticker_date.empty:
     acao = df_quotes_ticker_date.iloc[0]
     acao_valor = float(acao['Adj Close'])
@@ -29,11 +33,10 @@ def get_dividendo_yield(df):
   # Dividend Yield (DY) = (Dividendos pagos / Preço da ação) X 100
   # ds_dividendos_pagos = 'Dividendos pagos'
   acao_valor, acao_volume = get_acao_by_defer_date(df)
-  acao_valor = acao_valor * 100
-  vl_dividendos_pagos = get_account_value_by_code(df, cd_dividendos_pagos) * 100
+  vl_dividendos_pagos = get_account_value_by_code(df, cd_dividendos_pagos)
 
   try:
-    vl_dividendo_yield = (vl_dividendos_pagos/ acao_valor)
+    vl_dividendo_yield = ( vl_dividendos_pagos / acao_valor) * 100
     return vl_dividendo_yield
   except ZeroDivisionError:
     return vl_dividendos_pagos
@@ -127,7 +130,6 @@ def get_p_ativo_circulante_liquido(df):
   except ZeroDivisionError:
     vl_ativos_circulantes_liq_por_acao = vl_ativo_circulante
 
-  print(vl_ativo_circulante)
   vl_p_ativos_circulantes_liq = acao_valor / vl_ativos_circulantes_liq_por_acao
   return vl_p_ativos_circulantes_liq
 
@@ -430,6 +432,7 @@ def process_indicators():
     df_cnpj = df_cnpj[selecao_data]
     df_cnpj.set_index('CD_CONTA', inplace=True)
     if not df_cnpj.empty:
+      print(f'Empresa[{len(df_indicators) - 1}] = {cnpj}: ')
       row = {
           'cnpj': cnpj,
           'date': date,

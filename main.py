@@ -67,7 +67,7 @@ def clean_itr(df):
                  'CD_CONTA', 'VL_CONTA']]
 
     # (Hopefully) Remove the remaining duplicated rows
-    temp = temp.drop_duplicates(keep='last', ignore_index=True)
+    # temp = temp.drop_duplicates(keep='last', ignore_index=True)
 
     return temp
 
