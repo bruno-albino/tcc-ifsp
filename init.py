@@ -38,21 +38,22 @@ def get_quotes_from_dates(start_date, end_date):
 
 
 def init():
-  # print('Downloading account dictionary...')
-  # first_year = 2015
+  print('Downloading account dictionary...')
+  first_year = 2015
   # current_year = datetime.datetime.now().year
   # years = [first_year]
 
   # while (len(years) < (current_year - first_year + 1)):
   #   years.append((years[-1] + 1))
   
-  # # download_account_dictionary()
-  # print(f'Start downloading quotes from {years[0]} to {years[-1]}')
+  # download_account_dictionary()
+  # print(f'Start downloading quotes from {years[0]}x to {years[-1]}')
   # for year in years:
   #   start_date = datetime.datetime.now().date().replace(year=year - 1, month=12, day=31)
   #   end_date = datetime.datetime.now().date().replace(year=year, month=12, day=31)
   #   get_quotes_from_dates(start_date, end_date)
-  print('Download quotes finished')
+  # print('Download quotes finished')
+  download_itrs('2021')
   process()
 
 

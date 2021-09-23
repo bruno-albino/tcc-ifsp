@@ -35,14 +35,14 @@ def load_itr():
     df = pd.DataFrame()
     print('Loading data...')
 
-    files_to_read = [f for f in list(dir.glob('itr_cia_aberta_*_ind_*.csv'))
+    files_to_read = [f for f in list(dir.glob('itr_cia_aberta_*_*_*.csv'))
                      if any(itr in str(f) for itr in itr_names)]
 
     for file in tqdm(files_to_read,
                      dynamic_ncols=True):
         df = df.append(pd.read_csv(file, sep=';', encoding='latin1'))
 
-    # df = df[df['ORDEM_EXERC'].eq('ÚLTIMO')].reset_index(drop=True)
+    df = df[df['ORDEM_EXERC'].eq('ÚLTIMO')].reset_index(drop=True)
     df['TICKER'] = df['DENOM_CIA'].apply(name_to_ticker)
     return df
 

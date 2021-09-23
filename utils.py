@@ -2,13 +2,13 @@ def get_itrs_path():
   return './itrs'
 
 def get_itr_names():
-# names = ['DVA', 'DRE', 'DRA', 'DMPL', 'DFC_MI', 'BPP', 'BPA']
-  names = ['DRE']
+  names = ['DVA', 'DRE', 'DRA', 'DMPL', 'DFC_MI', 'BPP', 'BPA']
+  # names = ['DRE']
   return names
 
 def get_secondary_documents():
   # secondaries = ['ind', 'con']
-  secondaries = ['ind']
+  secondaries = ['con']
   return secondaries
 
 def get_quotes_path():
