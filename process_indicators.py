@@ -21,7 +21,7 @@ def get_acao_by_defer_date(df):
   df_quotes_ticker_date = df_quotes[selecao_ticker & selecao_date].reset_index()
 
   acao_valor, acao_volume = 0.0, 0.0
-  print(df_quotes_ticker_date)
+  # print(df_quotes_ticker_date)
   if not df_quotes_ticker_date.empty:
     acao = df_quotes_ticker_date.iloc[0]
     acao_valor = float(acao['Adj Close'])

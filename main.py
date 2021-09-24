@@ -17,12 +17,6 @@ def choose_company_tickers(tickers):
     else:
         return np.nan
 
-
-dir = Path(get_download_path())
-file = [f for f in list(dir.glob('InstrumentsConsolidatedFile*.csv'))][0]
-df_b3_instruments = pd.read_csv(file, encoding='latin1', sep=';', dtype=str)
-mapper = df_b3_instruments.groupby(['CrpnNm'])['TckrSymb'].apply(choose_company_tickers).to_dict()
-
 def load_itr():
     itr_names = get_itr_names()
     itr_path = get_itrs_path()
@@ -67,6 +61,11 @@ def clean_itr(df):
     return temp
 
 def name_to_ticker(name: str):
+    dir = Path(get_download_path())
+    file = [f for f in list(dir.glob('InstrumentsConsolidatedFile*.csv'))][0]
+    df_b3_instruments = pd.read_csv(file, encoding='latin1', sep=';', dtype=str)
+    mapper = df_b3_instruments.groupby(['CrpnNm'])['TckrSymb'].apply(choose_company_tickers).to_dict()
+
     try:
         return mapper[name]
     except KeyError:

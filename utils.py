@@ -1,3 +1,6 @@
+import os
+from pathlib import Path
+
 def get_itrs_path():
   return './itrs'
 
@@ -16,3 +19,8 @@ def get_indicators_path():
 
 def get_download_path():
   return './data/downloaded'
+
+def get_chromedriver_path():
+  value = os.path.join(Path(__file__).parent.resolve(), 'chrome-drivers')
+  return value
+
