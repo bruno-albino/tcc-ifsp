@@ -1,4 +1,4 @@
-from utils import get_itr_names, get_itrs_path, get_processed_path
+from utils import get_download_path, get_itr_names, get_itrs_path, get_processed_path
 import numpy as np
 import pandas as pd
 import process_indicators 
@@ -18,15 +18,10 @@ def choose_company_tickers(tickers):
         return np.nan
 
 
-df_b3_instruments = pd.read_csv(
-    'data/downloaded/InstrumentsConsolidatedFile_20210528_1.csv',
-    encoding='latin1',
-    sep=';',
-    dtype=str
-)
-mapper = df_b3_instruments.groupby(['CrpnNm'])['TckrSymb']\
-    .apply(choose_company_tickers)\
-    .to_dict()
+dir = Path(get_download_path())
+file = [f for f in list(dir.glob('InstrumentsConsolidatedFile*.csv'))][0]
+df_b3_instruments = pd.read_csv(file, encoding='latin1', sep=';', dtype=str)
+mapper = df_b3_instruments.groupby(['CrpnNm'])['TckrSymb'].apply(choose_company_tickers).to_dict()
 
 def load_itr():
     itr_names = get_itr_names()
@@ -86,6 +81,3 @@ def process():
     df_clean.to_csv(processed_path)
     print(f'Clean data saved in {processed_path} !')
     process_indicators.process_indicators()
-
-if __name__ == '__main__':
-    process()
