@@ -59,17 +59,30 @@ def clean_itr(df):
     # temp = temp.drop_duplicates(keep='last', ignore_index=True)
 
     return temp
+dir = Path(get_download_path())
+file = [f for f in list(dir.glob('InstrumentsConsolidatedFile*.csv'))][0]
+df_b3_instruments = pd.read_csv(file, encoding='latin1', sep=';', dtype=str)
+mapper = df_b3_instruments.groupby(['CrpnNm'])['TckrSymb'].apply(choose_company_tickers).to_dict()
 
 def name_to_ticker(name: str):
-    dir = Path(get_download_path())
-    file = [f for f in list(dir.glob('InstrumentsConsolidatedFile*.csv'))][0]
-    df_b3_instruments = pd.read_csv(file, encoding='latin1', sep=';', dtype=str)
-    mapper = df_b3_instruments.groupby(['CrpnNm'])['TckrSymb'].apply(choose_company_tickers).to_dict()
-
     try:
         return mapper[name]
     except KeyError:
         return np.nan
+
+def get_accounts(df):
+  # Extract account names
+  accounts = df[['CD_CONTA', 'DS_CONTA']].copy()
+  accounts['DS_CONTA'] = accounts['DS_CONTA'].str.lower()
+  accounts['DS_CONTA'] = accounts['DS_CONTA']\
+      .str.normalize('NFKD')\
+      .str.encode('ascii', errors='ignore')\
+      .str.decode('utf-8')
+  accounts = accounts.sort_values('CD_CONTA')
+  accounts = accounts.drop_duplicates(keep='first', ignore_index=True)
+  accounts_df = pd.DataFrame(accounts)
+  accounts_df.set_index('CD_CONTA', inplace=True)
+  return accounts_df
 
 def process():
     print('Start process ITRs')
@@ -79,4 +92,10 @@ def process():
     df_clean = clean_itr(df)
     df_clean.to_csv(processed_path)
     print(f'Clean data saved in {processed_path} !')
+
+    print('Downloading account dictionary...')
+    df_accounts = get_accounts(df)
+    df_accounts.to_csv('./data/processed/accounts.csv')
+    print(f'Accouynt data saved in ./data/processed/accounts.csv!')
+
     process_indicators.process_indicators()

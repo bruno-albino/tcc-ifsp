@@ -26,6 +26,9 @@ def get_remaining_quotes():
   start_date = datetime.date(int(year), int(month), int(day)) + datetime.timedelta(days=1)
   end_date = datetime.date.today()
 
+  if start_date.ctime() >= end_date.ctime():
+    return
+
   print(f'Quotes exists. Downloading remaining quotes from {start_date} to {end_date}')
   new_df_quotes = get_quotes_from_dates(start_date, end_date)
   
@@ -57,7 +60,7 @@ def generate_fresh_quotes():
   while (len(years) < (current_year - first_year + 1)):
     years.append((years[-1] + 1))
   
-  print('Quotes don\'t exist. Downloading fresh quotes from {years[0]}x to {years[-1]}')
+  print(f'Quotes don\'t exist. Downloading fresh quotes from {years[0]}x to {years[-1]}')
   df = pd.DataFrame()
 
   for year in years:
@@ -72,9 +75,6 @@ def generate_fresh_quotes():
 def init():
   print('Downloading instrument consolidated file...')
   download_instrument_consolidated()
-
-  print('Downloading account dictionary...')
-  download_account_dictionary()
 
   # check if quotes exists
   try:

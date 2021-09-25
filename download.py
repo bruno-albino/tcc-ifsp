@@ -9,7 +9,7 @@ import io
 import os
 import pathlib
 from utils import get_chromedriver_path, get_download_path, get_itr_names, get_itrs_path
-from datetime import date
+from datetime import date, timedelta
 from selenium import webdriver
 from pathlib import Path
 
@@ -21,13 +21,18 @@ def download_instrument_consolidated():
   delete_consolidate_files()
 
   today = date.today()
+
+  # Site da B3 não entrega no final de semana
+  if today.weekday() > 4:
+    diff = today.weekday() - 4
+    today = today - timedelta(days=diff)
+
   options = webdriver.ChromeOptions()
   prefs = {"download.default_directory" : os.path.join(pathlib.Path(__file__).parent.resolve(), 'data', 'downloaded')}
   options.add_experimental_option("prefs",prefs)
   options.headless = True
 
-# C:/bin/chromedriver.exe"
-  driver = webdriver.Chrome(options=options, executable_path=get_chromedriver_path() + '/chromedriver')
+  driver = webdriver.Chrome(options=options, executable_path=get_chromedriver_path())
   driver.get(f'https://arquivos.b3.com.br/tabelas/InstrumentsConsolidated/{today}')
   time.sleep(5)
   driver.find_element_by_link_text("Baixar arquivo completo").click()

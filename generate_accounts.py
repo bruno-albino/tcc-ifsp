@@ -1,13 +1,13 @@
 # CRON JOB TO RUN EVERY YEAR
 from main import load_itr
-import download
+from download import download_itrs
 from datetime import date
 import pandas as pd
 
 data_atual = date.today().year
 
 def download_account_dictionary():
-  download.download_itrs(str(data_atual))
+  download_itrs(str(data_atual))
   df = load_itr()
 
   # Extract account names

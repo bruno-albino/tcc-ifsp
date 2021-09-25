@@ -1,6 +1,9 @@
 from utils import get_indicators_path, get_processed_path, get_quotes_path
 import pandas as pd
 
+QUANTIDADE_ACOES = 1516575612
+VALOR_CONTABIL_EMPRESA = 100000000000
+
 def get_account_value_by_code(df, cd_account):
   try:
     result = float(df.loc[cd_account]['VL_CONTA'])
@@ -12,7 +15,7 @@ def get_account_value_by_code(df, cd_account):
     print(f'Account not found: {cd_account}')
     return 0
 
-def get_acao_by_defer_date(df):
+def get_quote_value_by_defer_date(df):
   df_quotes = pd.read_csv(get_quotes_path())
   date = df['DT_REFER'].max()
   ticker = list(df['TICKER'])[0]
@@ -20,19 +23,18 @@ def get_acao_by_defer_date(df):
   selecao_date = df_quotes['Date'] == date
   df_quotes_ticker_date = df_quotes[selecao_ticker & selecao_date].reset_index()
 
-  acao_valor, acao_volume = 0.0, 0.0
-  # print(df_quotes_ticker_date)
+  acao_valor = 0.0
+
   if not df_quotes_ticker_date.empty:
     acao = df_quotes_ticker_date.iloc[0]
     acao_valor = float(acao['Adj Close'])
-    acao_volume = float(acao['Volume'])
-  return acao_valor, acao_volume
+  return acao_valor
 
 def get_dividendo_yield(df):
   cd_dividendos_pagos = '6.01.02.11'
   # Dividend Yield (DY) = (Dividendos pagos / Preço da ação) X 100
   # ds_dividendos_pagos = 'Dividendos pagos'
-  acao_valor, acao_volume = get_acao_by_defer_date(df)
+  acao_valor = get_quote_value_by_defer_date(df)
   vl_dividendos_pagos = get_account_value_by_code(df, cd_dividendos_pagos)
 
   try:
@@ -46,7 +48,7 @@ def get_pl(df):
   cd_lucro_por_acao = '3.99'
 
   vl_lucro_por_acao = get_account_value_by_code(df, cd_lucro_por_acao)
-  acao_valor, acao_volume = get_acao_by_defer_date(df)
+  acao_valor = get_quote_value_by_defer_date(df)
 
   try:
     vl_pl = acao_valor / vl_lucro_por_acao
@@ -75,14 +77,14 @@ def get_ebitda(df):
 def get_p_ebitda(df):
   # P/EBITDA = Preço atual / EBITDA
   vl_ebitda = get_ebitda(df)
-  acao_valor, acao_volume = get_acao_by_defer_date(df)
+  acao_valor = get_quote_value_by_defer_date(df)
   vl_p_ebitda = acao_valor / vl_ebitda
   return vl_p_ebitda
 
 def get_p_ebit(df):
   ## P/EBIT = Preço atual / EBIT
   vl_ebit = get_ebit(df)
-  acao_valor, acao_volume = get_acao_by_defer_date(df)
+  acao_valor = get_quote_value_by_defer_date(df)
 
   try:
     vl_p_ebit = acao_valor / vl_ebit
@@ -106,10 +108,10 @@ def get_p_cap_giro(df):
   # subtrair o valor do passivo circulante e dividir o resultado pelo número total de ações emitidas.
   vl_ativo_circulante = get_ativo_circulante(df)
   vl_passivo_circulante = get_passivo_circulante(df)
-  acao_valor, acao_volume = get_acao_by_defer_date(df)
+  acao_valor = get_quote_value_by_defer_date(df)
 
   try:
-    vl_cap_giro_por_acao = (vl_ativo_circulante - vl_passivo_circulante) / acao_volume
+    vl_cap_giro_por_acao = (vl_ativo_circulante - vl_passivo_circulante) / QUANTIDADE_ACOES
   except ZeroDivisionError:
     vl_cap_giro_por_acao = vl_ativo_circulante - vl_passivo_circulante
 
@@ -123,10 +125,10 @@ def get_p_ativo_circulante_liquido(df):
   # P/ACL = Preço da Ação / Ativos Circulantes Líquidos por ação
   # Ativos Circulantes Líquidos por ação = Ativos circulantes / quantidade de ações
   vl_ativo_circulante = get_ativo_circulante(df)
-  acao_valor, acao_volume = get_acao_by_defer_date(df)
+  acao_valor = get_quote_value_by_defer_date(df)
 
   try:
-    vl_ativos_circulantes_liq_por_acao = vl_ativo_circulante / acao_volume
+    vl_ativos_circulantes_liq_por_acao = vl_ativo_circulante / QUANTIDADE_ACOES
   except ZeroDivisionError:
     vl_ativos_circulantes_liq_por_acao = vl_ativo_circulante
 
@@ -141,10 +143,9 @@ def get_patrimonio_liquido(df):
 def get_vpa(df):
   # VPA = Patrimônio líquido / Nº de ações
   vl_patrimonio_liquido = get_patrimonio_liquido(df)
-  vl_acao, volume_acao = get_acao_by_defer_date(df)
 
   try:
-    vl_vpa = vl_patrimonio_liquido / volume_acao
+    vl_vpa = vl_patrimonio_liquido / QUANTIDADE_ACOES
     return vl_vpa
   except ZeroDivisionError:
     return vl_patrimonio_liquido
@@ -152,7 +153,7 @@ def get_vpa(df):
 def get_pvp(df):
   # P/VP = Preço atual / VPA
   vl_vpa = get_vpa(df)
-  acao_valor, acao_volume = get_acao_by_defer_date(df)
+  acao_valor = get_quote_value_by_defer_date(df)
   
   try:
     vl_p_vp = acao_valor / vl_vpa
@@ -164,12 +165,12 @@ def get_p_ativo(df):
   # P/Ativo = Preço da ação / Valor Contábil por ação
   # TODO: Valor contábil da empresa
   # Valor contábil por ação = Valor contábil da empresa / Total de ações em circulação
-  acao_valor, acao_volume = get_acao_by_defer_date(df)
+  acao_valor = get_quote_value_by_defer_date(df)
 
-  vl_contabil_da_empresa = 1000000000
+  vl_contabil_da_empresa = VALOR_CONTABIL_EMPRESA
 
   try:
-    vl_contabil_por_acao = vl_contabil_da_empresa / acao_volume
+    vl_contabil_por_acao = vl_contabil_da_empresa / QUANTIDADE_ACOES
   except ZeroDivisionError:
     vl_contabil_por_acao = vl_contabil_da_empresa
 
@@ -189,9 +190,9 @@ def get_ev(df):
 
   vl_ativos_nao_operacionais = get_account_value_by_code(df, cd_ativos_nao_operacionais)
   vl_caixa_e_equivalente = get_account_value_by_code(df, cd_caixa_e_equivalente)
-  acao_valor, acao_volume = get_acao_by_defer_date(df)
+  acao_valor = get_quote_value_by_defer_date(df)
                                 
-  vl_capitalizacao = acao_valor * acao_volume
+  vl_capitalizacao = acao_valor * QUANTIDADE_ACOES
   # vl_divida = vl_passivo_total + get_patrimonio_liquido()
   vl_divida = get_patrimonio_liquido(df)
 
@@ -222,11 +223,10 @@ def get_lucro_liquido(df):
 
 def get_lpa(df):
   # LPA  = Lucro líquido / Nº de ações
-  acao_valor, acao_volume = get_acao_by_defer_date(df)
   vl_lucro_liquido = get_lucro_liquido(df)
 
   try:
-    vl_lpa = vl_lucro_liquido / acao_volume
+    vl_lpa = vl_lucro_liquido / QUANTIDADE_ACOES
     return vl_lpa
   except ZeroDivisionError:
     return vl_lucro_liquido
@@ -238,8 +238,8 @@ def get_receita_liquida(df):
 
 def get_psr(df):
   # PSR = Preço da Ação / Receita Líquida por Ação
-  acao_valor, acao_volume = get_acao_by_defer_date(df)
-  acao_valor_total = acao_valor * acao_volume
+  acao_valor = get_quote_value_by_defer_date(df)
+  acao_valor_total = acao_valor * QUANTIDADE_ACOES
   vl_receita_liquida = get_receita_liquida(df)
 
   try:
