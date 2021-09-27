@@ -1,9 +1,17 @@
+from download import download_instrument_consolidated
 from utils import get_download_path, get_itr_names, get_itrs_path, get_processed_path
 import numpy as np
 import pandas as pd
-import process_indicators 
+from process_indicators import process_indicators
 from pathlib import Path
 from tqdm import tqdm
+
+print('Downloading instrument consolidated file...')
+download_instrument_consolidated()
+
+dir = Path(get_download_path())
+file = [f for f in list(dir.glob('InstrumentsConsolidatedFile*.csv'))][0]
+df_b3_instruments = pd.read_csv(file, encoding='latin1', sep=';', dtype=str)
 
 def choose_company_tickers(tickers):
     company_tickers = []
@@ -16,6 +24,8 @@ def choose_company_tickers(tickers):
         return company_tickers[0]
     else:
         return np.nan
+
+mapper = df_b3_instruments.groupby(['CrpnNm'])['TckrSymb'].apply(choose_company_tickers).to_dict()
 
 def load_itr():
     itr_names = get_itr_names()
@@ -52,17 +62,13 @@ def clean_itr(df):
                         'CD_CONTA']).last().reset_index()
 
     # Remove unused columns
-    temp = temp[['CNPJ_CIA', 'TICKER', 'DT_REFER', 'DENOM_CIA', 'CD_CVM',
-                 'CD_CONTA', 'VL_CONTA']]
+    # temp = temp[['CNPJ_CIA', 'TICKER', 'DT_REFER', 'DENOM_CIA', 'CD_CVM',
+    #              'CD_CONTA', 'VL_CONTA']]
 
     # (Hopefully) Remove the remaining duplicated rows
     # temp = temp.drop_duplicates(keep='last', ignore_index=True)
 
     return temp
-dir = Path(get_download_path())
-file = [f for f in list(dir.glob('InstrumentsConsolidatedFile*.csv'))][0]
-df_b3_instruments = pd.read_csv(file, encoding='latin1', sep=';', dtype=str)
-mapper = df_b3_instruments.groupby(['CrpnNm'])['TckrSymb'].apply(choose_company_tickers).to_dict()
 
 def name_to_ticker(name: str):
     try:
@@ -89,13 +95,13 @@ def process():
     processed_path = get_processed_path()
     df = load_itr()
 
-    df_clean = clean_itr(df)
-    df_clean.to_csv(processed_path)
-    print(f'Clean data saved in {processed_path} !')
-
     print('Downloading account dictionary...')
     df_accounts = get_accounts(df)
     df_accounts.to_csv('./data/processed/accounts.csv')
     print(f'Accouynt data saved in ./data/processed/accounts.csv!')
 
-    process_indicators.process_indicators()
+    df_clean = clean_itr(df)
+    df_clean.to_csv(processed_path)
+    print(f'Clean data saved in {processed_path} !')
+
+    process_indicators()

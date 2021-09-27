@@ -1,15 +1,9 @@
-# RUN THIS FILE IF YOU JUST CLONED THE REPO. THIS WILL:
-# 1 - CREATE THE ACCOUNTS DICTIONARY
-# 2 - DOWNLOAD ALL THE QUOTES FROM 2015 UNTIL NOW
-# 3 - PROCESS THE INDICATORS TO ALL COMPANIES
-
 import datetime
 import pandas as pd
 import yfinance as yf
 from utils import get_quotes_path
 from download import download_instrument_consolidated, download_itrs
 from main import load_itr, process
-from generate_accounts import download_account_dictionary
 
 quotes_path = get_quotes_path()
 
@@ -19,7 +13,7 @@ def fix_date(date):
 def get_remaining_quotes():
   df_quotes = pd.read_csv(quotes_path)
 
-  # get last quote date
+  # Busca a data máxima das cotas, e faz o download das cotas restantes
   date = df_quotes['Date'].max()
   [year, month, day] = date.split('-')
   
@@ -53,6 +47,7 @@ def get_quotes_from_dates(start_date, end_date):
   return new_df_quotes
 
 def generate_fresh_quotes():
+  # Gerando arquivo de cotas de 2015 ao ano atual
   first_year = 2015
   current_year = datetime.datetime.now().year
   years = [first_year]
@@ -73,18 +68,17 @@ def generate_fresh_quotes():
   print('Download fresh quotes finished')
 
 def init():
-  print('Downloading instrument consolidated file...')
-  download_instrument_consolidated()
+  year = datetime.datetime.today().year
 
-  # check if quotes exists
+  # Buscar arquivo de cotas, localizado em ./data/processed/quotes.csv
   try:
     pd.read_csv(quotes_path)
     get_remaining_quotes()
   except FileNotFoundError:
-    # file don´t exists, create 
+    # Arquivo não existe 
     generate_fresh_quotes()
 
-  download_itrs('2021')
+  download_itrs(f'{year}')
   process()
 
 

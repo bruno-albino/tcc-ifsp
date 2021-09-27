@@ -37,11 +37,11 @@ def get_dividendo_yield(df):
   acao_valor = get_quote_value_by_defer_date(df)
   vl_dividendos_pagos = get_account_value_by_code(df, cd_dividendos_pagos)
 
-  try:
-    vl_dividendo_yield = ( vl_dividendos_pagos / acao_valor) * 100
-    return vl_dividendo_yield
-  except ZeroDivisionError:
-    return vl_dividendos_pagos
+  if vl_dividendos_pagos == 0 or acao_valor == 0:
+    return 0
+
+  vl_dividendo_yield = ( vl_dividendos_pagos / acao_valor) * 100
+  return vl_dividendo_yield
 
 def get_pl(df):
   # P/L = Preço atual / Lucro por ação (LPA)
@@ -50,11 +50,11 @@ def get_pl(df):
   vl_lucro_por_acao = get_account_value_by_code(df, cd_lucro_por_acao)
   acao_valor = get_quote_value_by_defer_date(df)
 
-  try:
-    vl_pl = acao_valor / vl_lucro_por_acao
-    return vl_pl
-  except ZeroDivisionError:
-    return acao_valor
+  if vl_lucro_por_acao <= 0.0:
+    return vl_lucro_por_acao
+
+  vl_pl = acao_valor / vl_lucro_por_acao
+  return vl_pl
 
 def get_ebit(df):
   # EBIT (3.05)
@@ -86,11 +86,8 @@ def get_p_ebit(df):
   vl_ebit = get_ebit(df)
   acao_valor = get_quote_value_by_defer_date(df)
 
-  try:
-    vl_p_ebit = acao_valor / vl_ebit
-    return vl_p_ebit
-  except ZeroDivisionError:
-    return acao_valor
+  vl_p_ebit = acao_valor / vl_ebit
+  return vl_p_ebit
 
 def get_ativo_circulante(df):
   cd_ativo_circulante = '1.01'
@@ -110,16 +107,10 @@ def get_p_cap_giro(df):
   vl_passivo_circulante = get_passivo_circulante(df)
   acao_valor = get_quote_value_by_defer_date(df)
 
-  try:
-    vl_cap_giro_por_acao = (vl_ativo_circulante - vl_passivo_circulante) / QUANTIDADE_ACOES
-  except ZeroDivisionError:
-    vl_cap_giro_por_acao = vl_ativo_circulante - vl_passivo_circulante
+  vl_cap_giro_por_acao = (vl_ativo_circulante - vl_passivo_circulante) / QUANTIDADE_ACOES
 
-  try:
-    vl_p_cap_giro = acao_valor / vl_cap_giro_por_acao
-    return vl_p_cap_giro
-  except ZeroDivisionError:
-    return acao_valor
+  vl_p_cap_giro = acao_valor / vl_cap_giro_por_acao
+  return vl_p_cap_giro
 
 def get_p_ativo_circulante_liquido(df):
   # P/ACL = Preço da Ação / Ativos Circulantes Líquidos por ação
@@ -127,10 +118,7 @@ def get_p_ativo_circulante_liquido(df):
   vl_ativo_circulante = get_ativo_circulante(df)
   acao_valor = get_quote_value_by_defer_date(df)
 
-  try:
-    vl_ativos_circulantes_liq_por_acao = vl_ativo_circulante / QUANTIDADE_ACOES
-  except ZeroDivisionError:
-    vl_ativos_circulantes_liq_por_acao = vl_ativo_circulante
+  vl_ativos_circulantes_liq_por_acao = vl_ativo_circulante / QUANTIDADE_ACOES
 
   vl_p_ativos_circulantes_liq = acao_valor / vl_ativos_circulantes_liq_por_acao
   return vl_p_ativos_circulantes_liq
@@ -143,36 +131,26 @@ def get_patrimonio_liquido(df):
 def get_vpa(df):
   # VPA = Patrimônio líquido / Nº de ações
   vl_patrimonio_liquido = get_patrimonio_liquido(df)
-
-  try:
-    vl_vpa = vl_patrimonio_liquido / QUANTIDADE_ACOES
-    return vl_vpa
-  except ZeroDivisionError:
-    return vl_patrimonio_liquido
+  vl_vpa = vl_patrimonio_liquido / QUANTIDADE_ACOES
+  return vl_vpa
 
 def get_pvp(df):
   # P/VP = Preço atual / VPA
   vl_vpa = get_vpa(df)
   acao_valor = get_quote_value_by_defer_date(df)
-  
+
   try:
     vl_p_vp = acao_valor / vl_vpa
     return vl_p_vp
   except ZeroDivisionError:
-    return acao_valor
+    return vl_vpa
 
 def get_p_ativo(df):
   # P/Ativo = Preço da ação / Valor Contábil por ação
   # TODO: Valor contábil da empresa
   # Valor contábil por ação = Valor contábil da empresa / Total de ações em circulação
   acao_valor = get_quote_value_by_defer_date(df)
-
-  vl_contabil_da_empresa = VALOR_CONTABIL_EMPRESA
-
-  try:
-    vl_contabil_por_acao = vl_contabil_da_empresa / QUANTIDADE_ACOES
-  except ZeroDivisionError:
-    vl_contabil_por_acao = vl_contabil_da_empresa
+  vl_contabil_por_acao = VALOR_CONTABIL_EMPRESA / QUANTIDADE_ACOES
 
   vl_p_ativo = acao_valor / vl_contabil_por_acao
   return vl_p_ativo
@@ -191,10 +169,11 @@ def get_ev(df):
   vl_ativos_nao_operacionais = get_account_value_by_code(df, cd_ativos_nao_operacionais)
   vl_caixa_e_equivalente = get_account_value_by_code(df, cd_caixa_e_equivalente)
   acao_valor = get_quote_value_by_defer_date(df)
+  vl_patrimonio_liquido = get_patrimonio_liquido(df)
+  vl_passivo_total = get_passivo_total(df)
                                 
   vl_capitalizacao = acao_valor * QUANTIDADE_ACOES
-  # vl_divida = vl_passivo_total + get_patrimonio_liquido()
-  vl_divida = get_patrimonio_liquido(df)
+  vl_divida = vl_passivo_total + vl_patrimonio_liquido
 
   vl_ev = vl_capitalizacao + vl_divida - vl_caixa_e_equivalente - vl_ativos_nao_operacionais
   return vl_ev
@@ -210,11 +189,8 @@ def get_ev_ebit(df):
   vl_ev = get_ev(df)
   vl_ebit = get_ebit(df)
 
-  try:
-    vl_ev_ebit = vl_ev / vl_ebit
-    return vl_ev_ebit
-  except ZeroDivisionError:
-    return vl_ev
+  vl_ev_ebit = vl_ev / vl_ebit
+  return vl_ev_ebit
 
 def get_lucro_liquido(df):
   cd_lucro_liquido = '3.11'
@@ -225,11 +201,8 @@ def get_lpa(df):
   # LPA  = Lucro líquido / Nº de ações
   vl_lucro_liquido = get_lucro_liquido(df)
 
-  try:
-    vl_lpa = vl_lucro_liquido / QUANTIDADE_ACOES
-    return vl_lpa
-  except ZeroDivisionError:
-    return vl_lucro_liquido
+  vl_lpa = vl_lucro_liquido / QUANTIDADE_ACOES
+  return vl_lpa
 
 def get_receita_liquida(df):
   cd_receita_liquida = '3.01'
@@ -242,22 +215,16 @@ def get_psr(df):
   acao_valor_total = acao_valor * QUANTIDADE_ACOES
   vl_receita_liquida = get_receita_liquida(df)
 
-  try:
-    vl_psr = acao_valor_total / vl_receita_liquida
-    return vl_psr
-  except ZeroDivisionError:
-    return acao_valor_total
+  vl_psr = acao_valor_total / vl_receita_liquida
+  return vl_psr
 
 def get_roe(df):
   #ROE = Lucro Líquido (3.11) / Patrimônio Líquido (2.03)
   vl_lucro_liquido = get_lucro_liquido(df)
   vl_patrimonio_liquido = get_patrimonio_liquido(df)
 
-  try:
-    vl_roe = vl_lucro_liquido / vl_patrimonio_liquido
-    return vl_roe
-  except ZeroDivisionError:
-    return vl_lucro_liquido
+  vl_roe = vl_lucro_liquido / vl_patrimonio_liquido
+  return vl_roe
 
 def get_ativo_total(df):
   cd_ativo_total = '1'
@@ -293,11 +260,8 @@ def get_roic(df):
   vl_ebit_imposto = vl_ebit - vl_imposto
   vl_patrimonio_liquido_divida_bruta = vl_patrimonio_liquido + vl_divida_bruta
 
-  try: 
-    vl_roic = vl_ebit_imposto / vl_patrimonio_liquido_divida_bruta
-    return vl_roic
-  except ZeroDivisionError:
-    return vl_ebit_imposto
+  vl_roic = vl_ebit_imposto / vl_patrimonio_liquido_divida_bruta
+  return vl_roic
 
 def get_lucro_bruto(df):
   cd_lucro_bruto = '3.03'
@@ -308,44 +272,33 @@ def get_m_bruta(df):
   #Margem Bruta = Lucro Bruto / Receita Líquida
   vl_lucro_bruto = get_lucro_bruto(df)
   vl_receita_liquida = get_receita_liquida(df)
-  try:
-    vl_margem_bruta = vl_lucro_bruto / vl_receita_liquida
-    return vl_margem_bruta
-  except ZeroDivisionError:
-    return vl_lucro_bruto
+
+  vl_margem_bruta = vl_lucro_bruto / vl_receita_liquida
+  return vl_margem_bruta
 
 def get_m_liquida(df):
   #Margem Líquida = Lucro Líquido / Receita Líquida
   vl_lucro_liquido = get_lucro_liquido(df)
   vl_receita_liquida = get_receita_liquida(df)
   
-  try:
-    vl_margem_liquida = vl_lucro_liquido / vl_receita_liquida
-    return vl_margem_liquida
-  except ZeroDivisionError:
-    return vl_lucro_liquido
+  vl_margem_liquida = vl_lucro_liquido / vl_receita_liquida
+  return vl_margem_liquida
 
 def get_m_ebit(df):
   #Margem EBIT = EBIT / Receita Líquida
   vl_ebit = get_ebit(df)
   vl_receita_liquida = get_receita_liquida(df)
-  
-  try:
-    vl_margem_ebit = vl_ebit / vl_receita_liquida
-    return vl_margem_ebit
-  except ZeroDivisionError:
-    return vl_ebit
+
+  vl_margem_ebit = vl_ebit / vl_receita_liquida
+  return vl_margem_ebit
 
 def get_m_ebitda(df):
   #Margem EBITDA = EBITDA / Receita Líquida
   vl_ebitda = get_ebitda(df)
   vl_receita_liquida = get_receita_liquida(df)
 
-  try:
-    vl_margem_ebitda = vl_ebitda / vl_receita_liquida
-    return vl_margem_ebitda
-  except ZeroDivisionError:
-    return vl_ebitda
+  vl_margem_ebitda = vl_ebitda / vl_receita_liquida
+  return vl_margem_ebitda
 
 def get_divida_liquida(df):
   # Caixa e Equivalente de Caixa (1.01.01)
@@ -368,37 +321,31 @@ def get_div_liquida_pl(df):
   vl_divida_liquida = get_divida_liquida(df)
   vl_patrimonio_liquido = get_patrimonio_liquido(df)
 
-  try:
-    vl_divida_liquida_por_pl = vl_divida_liquida / vl_patrimonio_liquido
-    return vl_divida_liquida_por_pl
-  except ZeroDivisionError:
-    return vl_divida_liquida
+  vl_divida_liquida_por_pl = vl_divida_liquida / vl_patrimonio_liquido
+  return vl_divida_liquida_por_pl
 
 def get_div_liquida_ebit(df):
   # Dív. Líquida/EBIT = Dívida Líquida/EBIT
   vl_divida_liquida = get_divida_liquida(df)
   vl_ebit = get_ebit(df)
 
-  try:
-    vl_divida_liquida_por_ebit = vl_divida_liquida / vl_ebit
-    return vl_divida_liquida_por_ebit
-  except ZeroDivisionError:
-    return vl_divida_liquida
+  vl_divida_liquida_por_ebit = vl_divida_liquida / vl_ebit
+  return vl_divida_liquida_por_ebit
 
 def get_div_liquida_ebitda(df):
   # Dív. Líquida/EBIT = Dívida Líquida/EBIT
-  vl_divida_liquida_por_ebitda = get_divida_liquida(df) / get_ebitda(df)
+  vl_divida_liquida = get_divida_liquida(df)
+  vl_ebitda = get_ebitda(df)
+  vl_divida_liquida_por_ebitda = vl_divida_liquida / vl_ebitda
   return vl_divida_liquida_por_ebitda
 
 def get_liq_corrente(df):
   ## 4. LIQ. CORRENTE = Ativo Circulante / Passivo Circulante
   vl_ativo_circulante = get_ativo_circulante(df)
   vl_passivo_circulante = get_passivo_circulante(df)
-  try:
-    vl_liquido_corrente =  vl_ativo_circulante / vl_passivo_circulante
-    return vl_liquido_corrente
-  except ZeroDivisionError:
-    return vl_ativo_circulante
+
+  vl_liquido_corrente =  vl_ativo_circulante / vl_passivo_circulante
+  return vl_liquido_corrente
 
 def get_pl_ativos(df):
   # PL/ATIVOS = Patrimônio Líquido / Ativos
@@ -466,3 +413,6 @@ def process_indicators():
       df_indicators = df_indicators.append(row, ignore_index=True)
 
   df_indicators.to_csv(get_indicators_path())
+
+if __name__ == "__main__":
+  process_indicators()
