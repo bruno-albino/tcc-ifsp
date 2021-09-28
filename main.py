@@ -62,11 +62,11 @@ def clean_itr(df):
                         'CD_CONTA']).last().reset_index()
 
     # Remove unused columns
-    # temp = temp[['CNPJ_CIA', 'TICKER', 'DT_REFER', 'DENOM_CIA', 'CD_CVM',
-    #              'CD_CONTA', 'VL_CONTA']]
+    temp = temp[['CNPJ_CIA', 'TICKER', 'DT_REFER', 'DENOM_CIA', 'CD_CVM',
+                 'CD_CONTA', 'VL_CONTA']]
 
     # (Hopefully) Remove the remaining duplicated rows
-    # temp = temp.drop_duplicates(keep='last', ignore_index=True)
+    temp = temp.drop_duplicates(keep='last', ignore_index=True)
 
     return temp
 
