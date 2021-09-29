@@ -8,7 +8,6 @@ pyvenv.cfg
 
 data/*/*.csv
 itrs/*.csv
-!data/*/Instruments*.csv
 meta_data/*.txt
 .ipynb_checkpoints/
 *.ipynb

@@ -493,7 +493,7 @@ def process_indicators():
 
   df_indicators = pd.DataFrame()
 
-  for cnpj in df['CNPJ_CIA'].unique():
+  for cnpj in df['CNPJ_CIA'].unique()[:20]:
     selecao_cnpj = df['CNPJ_CIA'] == cnpj
     df_cnpj = df[selecao_cnpj]
     selecao_data = df_cnpj['DT_REFER'] == date
@@ -501,10 +501,12 @@ def process_indicators():
 
     if not df_cnpj.empty:
       df_cnpj = download_remaining_data(df_cnpj)
+      companyName = df_cnpj['DENOM_CIA'].unique()[0]
       df_cnpj.set_index('CD_CONTA', inplace=True)
 
       row = {
           'cnpj': cnpj,
+          'company': companyName,
           'date': date,
           'dy': get_dividendo_yield(df_cnpj),
           'pl': get_pl(df_cnpj),
