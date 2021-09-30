@@ -17,9 +17,6 @@ def get_book_value(df):
 def get_account_value_by_code(df, cd_account):
   try:
     result = float(df.loc[cd_account]['VL_CONTA'])
-    if result < 0:
-      result = result * -1
-
     return result
   except KeyError:
     print(f'Account not found: {cd_account}')
