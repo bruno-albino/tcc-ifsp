@@ -10,70 +10,49 @@ def get_quotes_quantity(df):
 
   return vl_quotes_quantity
 
-def get_book_value(df):
-  vl_book_value = df['BOOK_VALUE'].unique()[0]
-  return vl_book_value
+def get_quote_value(df):
+  value = df['QUOTE_PRICE'].unique()[0]
+  return value
 
 def get_account_value_by_code(df, cd_account):
   try:
-    result = float(df.loc[cd_account]['VL_CONTA'])
+    result = float(df.loc[cd_account]['VL_CONTA']) * 1000 # ITR USA ESCALA_MOEDA == MIL
     return result
   except KeyError:
     print(f'Account not found: {cd_account}')
     return 0
 
-def get_quote_value_by_defer_date(df):
-  df_quotes = pd.read_csv(get_quotes_path())
-  date = df['DT_REFER'].max()
-  ticker = list(df['TICKER'])[0]
-  selecao_ticker = df_quotes['TICKER'] == ticker
-  selecao_date = df_quotes['Date'] == date
-  df_quotes_ticker_date = df_quotes[selecao_ticker & selecao_date].reset_index()
-
-  acao_valor = 0.0
-
-  if not df_quotes_ticker_date.empty:
-    acao = df_quotes_ticker_date.iloc[0]
-    acao_valor = float(acao['Adj Close'])
-  return acao_valor
-
 def get_dividendo_yield(df):
   vl_dividendo_yield = df['DY'].unique()[0]
   return vl_dividendo_yield
-  # cd_dividendos_pagos = '6.01.02.11'
-  # # Dividend Yield (DY) = (Dividendos pagos / Preço da ação) X 100
-  # # ds_dividendos_pagos = 'Dividendos pagos'
-  # acao_valor = get_quote_value_by_defer_date(df)
-  # vl_dividendos_pagos = get_account_value_by_code(df, cd_dividendos_pagos)
-
-  # if vl_dividendos_pagos == 0 or acao_valor == 0:
-  #   return 0
-
-  # vl_dividendo_yield = ( vl_dividendos_pagos / acao_valor) * 100
-  # return vl_dividendo_yield
 
 def get_pl(df):
   # P/L = Preço atual / Lucro por ação (LPA)
-  cd_lucro_por_acao = '3.99'
+  acao_valor = get_quote_value(df)
+  lpa = get_lpa(df)
 
-  vl_lucro_por_acao = get_account_value_by_code(df, cd_lucro_por_acao)
-  acao_valor = get_quote_value_by_defer_date(df)
+  if lpa == 0.0:
+    return lpa
 
-  if vl_lucro_por_acao <= 0.0:
-    return vl_lucro_por_acao
-
-  vl_pl = acao_valor / vl_lucro_por_acao
+  vl_pl = acao_valor / lpa
   return vl_pl
 
+def get_resultado_financeiro(df):
+  cd_resultado_financeiro = '3.06'
+  vl_resultado_financeiro = get_account_value_by_code(df, cd_resultado_financeiro)
+  return vl_resultado_financeiro
+
 def get_ebit(df):
-  # EBIT (3.05)
-  cd_ebit = '3.05'
-  vl_ebit = get_account_value_by_code(df, cd_ebit)
+  # Ebit = Lucro Líquido + Juros (resultado financeiro líquido) + Impostos;
+  vl_imposto = get_imposto(df)
+  vl_lucro_liquido = get_lucro_liquido(df)
+  vl_resultado_financeiro = get_resultado_financeiro(df)
+  
+  vl_ebit = vl_lucro_liquido + vl_resultado_financeiro + vl_imposto
   return vl_ebit
 
 def get_ebitda(df):
   # EBITDA = EBIT + Amortização-Depreciação
-  # EBIT (3.05)
   # Depreciação, Amortização e Exaustão (7.04.01)
 
   cd_depreciacao_amortizacao_e_exaustao = '7.04.01'
@@ -86,23 +65,25 @@ def get_ebitda(df):
 def get_p_ebitda(df):
   # P/EBITDA = Preço atual / EBITDA
   vl_ebitda = get_ebitda(df)
-  acao_valor = get_quote_value_by_defer_date(df)
+  acao_valor = get_quote_value(df)
+  vl_quotes_quantity = get_quotes_quantity(df)
 
   if vl_ebitda == 0:
     return vl_ebitda
 
-  vl_p_ebitda = acao_valor / vl_ebitda
+  vl_p_ebitda = acao_valor / (vl_ebitda / vl_quotes_quantity)
   return vl_p_ebitda
 
 def get_p_ebit(df):
   ## P/EBIT = Preço atual / EBIT
   vl_ebit = get_ebit(df)
-  acao_valor = get_quote_value_by_defer_date(df)
+  acao_valor = get_quote_value(df)
+  vl_quotes_quantity = get_quotes_quantity(df)
 
   if vl_ebit == 0:
     return vl_ebit
 
-  vl_p_ebit = acao_valor / vl_ebit
+  vl_p_ebit = acao_valor / (vl_ebit / vl_quotes_quantity)
   return vl_p_ebit
 
 def get_ativo_circulante(df):
@@ -121,7 +102,7 @@ def get_p_cap_giro(df):
   # subtrair o valor do passivo circulante e dividir o resultado pelo número total de ações emitidas.
   vl_ativo_circulante = get_ativo_circulante(df)
   vl_passivo_circulante = get_passivo_circulante(df)
-  acao_valor = get_quote_value_by_defer_date(df)
+  acao_valor = get_quote_value(df)
   vl_quotes_quantity = get_quotes_quantity(df)
 
   if vl_quotes_quantity == 0:
@@ -136,7 +117,7 @@ def get_p_ativo_circulante_liquido(df):
   # P/ACL = Preço da Ação / Ativos Circulantes Líquidos por ação
   # Ativos Circulantes Líquidos por ação = Ativos circulantes / quantidade de ações
   vl_ativo_circulante = get_ativo_circulante(df)
-  acao_valor = get_quote_value_by_defer_date(df)
+  acao_valor = get_quote_value(df)
   vl_quotes_quantity = get_quotes_quantity(df)
 
   if vl_quotes_quantity == 0:
@@ -166,7 +147,7 @@ def get_vpa(df):
 def get_pvp(df):
   # P/VP = Preço atual / VPA
   vl_vpa = get_vpa(df)
-  acao_valor = get_quote_value_by_defer_date(df)
+  acao_valor = get_quote_value(df)
 
   if vl_vpa == 0:
     return vl_vpa
@@ -177,42 +158,19 @@ def get_pvp(df):
 def get_p_ativo(df):
   # P/Ativo = Preço da ação / Valor Contábil por ação
   # Valor contábil por ação = Valor contábil da empresa / Total de ações em circulação
-  acao_valor = get_quote_value_by_defer_date(df)
+  acao_valor = get_quote_value(df)
   vl_quotes_quantity = get_quotes_quantity(df)
-  vl_book_value = get_book_value(df)
+  vl_ativo = get_ativo_total(df)
 
   if vl_quotes_quantity == 0:
     return vl_quotes_quantity
 
-  vl_contabil_por_acao = vl_book_value / vl_quotes_quantity
-
-  vl_p_ativo = acao_valor / vl_contabil_por_acao
+  vl_p_ativo = acao_valor / (vl_ativo / vl_quotes_quantity)
   return vl_p_ativo
 
 def get_ev(df):
   vl_ev = df['EV'].unique()[0]
   return vl_ev
-  # Ativos Não-Operacionais = "Outros Ativos Não Operacionais"
-  ### Caixa e equivalente de caixa (1.01.01)
-  # Capitalização = Valor do mercado = Valor de uma ação x Número de ações existentes
-  # Dívida = Balanço patrimonial = Passivo + Patrimônio líquido
-  # EV = Capitalização + Dívida – Caixa e Equivalentes – Ativos Não-Operacionais
-
-  # cd_caixa_e_equivalente = '1.01.01'
-  # cd_ativos_nao_operacionais = '1.02.01.10.04'
-  # # ds_ativos_nao_operacionais = 'Outros Ativos Não Operacionais'
-
-  # vl_ativos_nao_operacionais = get_account_value_by_code(df, cd_ativos_nao_operacionais)
-  # vl_caixa_e_equivalente = get_account_value_by_code(df, cd_caixa_e_equivalente)
-  # acao_valor = get_quote_value_by_defer_date(df)
-  # vl_patrimonio_liquido = get_patrimonio_liquido(df)
-  # vl_passivo_total = get_passivo_total(df)
-                                
-  # vl_capitalizacao = acao_valor * get_quotes_quantity(df)
-  # vl_divida = vl_passivo_total + vl_patrimonio_liquido
-
-  # vl_ev = vl_capitalizacao + vl_divida - vl_caixa_e_equivalente - vl_ativos_nao_operacionais
-  # return vl_ev
 
 def get_ev_ebitda(df):
   # EV/EBITDA = EV / EBITDA
@@ -260,14 +218,14 @@ def get_receita_liquida(df):
 
 def get_psr(df):
   # PSR = Preço da Ação / Receita Líquida por Ação
-  acao_valor = get_quote_value_by_defer_date(df)
-  acao_valor_total = acao_valor * get_quotes_quantity(df)
+  acao_valor = get_quote_value(df)
+  acao_quantity = get_quotes_quantity(df)
   vl_receita_liquida = get_receita_liquida(df)
 
   if vl_receita_liquida == 0:
     return vl_receita_liquida
 
-  vl_psr = acao_valor_total / vl_receita_liquida
+  vl_psr = (acao_valor / vl_receita_liquida) * acao_quantity
   return vl_psr
 
 def get_roe(df):
@@ -301,13 +259,17 @@ def get_divida_bruta(df):
   vl_endividamento
   return vl_endividamento
 
+def get_imposto(df):
+  cd_imposto = '3.08'
+  vl_imposto = get_account_value_by_code(df, cd_imposto)
+  return vl_imposto
+
 def get_roic(df):
   #ROIC = (EBIT - Impostos) / (Patrimônio Líquido + Endividamento)
   #Imposto de Renda e Contribuição Social sobre o Lucro (3.08) = Impostos
   #Dívida Bruta = Empréstimos e Financiamentos (2.01.04 + 2.02.01) = Endividamento
 
-  cd_imposto = '3.08'
-  vl_imposto = get_account_value_by_code(df, cd_imposto)
+  vl_imposto = get_imposto(df)
   vl_ebit = get_ebit(df)
   vl_patrimonio_liquido = get_patrimonio_liquido(df)
   vl_divida_bruta = get_divida_bruta(df)
@@ -460,6 +422,14 @@ def download_remaining_data(df):
   result = yf.Ticker(f'{ticker}.SA')
 
   try:
+    value = result.info['currentPrice']
+    if value == None:
+      value = 0
+    df['QUOTE_PRICE'] = value
+  except KeyError:
+    df['QUOTE_PRICE'] = 0
+
+  try:
     df['EV'] = result.info['enterpriseValue']
   except KeyError:
     df['EV'] = 0
@@ -470,14 +440,12 @@ def download_remaining_data(df):
     df['QUOTES_QUANTITY'] = 0
 
   try:
-    df['DY'] = result.info['dividendYield']
+    value = result.info['dividendYield']
+    if value == None:
+      value = 0
+    df['DY'] = value
   except KeyError:
     df['DY'] = 0
-  
-  try:
-    df['BOOK_VALUE'] = result.info['bookValue']
-  except KeyError:
-    df['BOOK_VALUE'] = 0
 
   return df
 
@@ -490,7 +458,7 @@ def process_indicators():
 
   df_indicators = pd.DataFrame()
 
-  for cnpj in df['CNPJ_CIA'].unique()[:20]:
+  for cnpj in df['CNPJ_CIA'].unique()[2:3]:
     selecao_cnpj = df['CNPJ_CIA'] == cnpj
     df_cnpj = df[selecao_cnpj]
     selecao_data = df_cnpj['DT_REFER'] == date
@@ -499,12 +467,14 @@ def process_indicators():
     if not df_cnpj.empty:
       df_cnpj = download_remaining_data(df_cnpj)
       companyName = df_cnpj['DENOM_CIA'].unique()[0]
+      ticker = df_cnpj.iloc[0].TICKER
       df_cnpj.set_index('CD_CONTA', inplace=True)
 
       row = {
           'cnpj': cnpj,
           'company': companyName,
           'date': date,
+          'ticker': ticker,
           'dy': get_dividendo_yield(df_cnpj),
           'pl': get_pl(df_cnpj),
           'pvp': get_pvp(df_cnpj),
