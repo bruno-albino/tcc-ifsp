@@ -68,7 +68,7 @@ def get_p_ebitda(df):
   acao_valor = get_quote_value(df)
   vl_quotes_quantity = get_quotes_quantity(df)
 
-  if vl_ebitda == 0:
+  if vl_ebitda == 0 or vl_quotes_quantity == 0:
     return vl_ebitda
 
   vl_p_ebitda = acao_valor / (vl_ebitda / vl_quotes_quantity)
@@ -80,7 +80,7 @@ def get_p_ebit(df):
   acao_valor = get_quote_value(df)
   vl_quotes_quantity = get_quotes_quantity(df)
 
-  if vl_ebit == 0:
+  if vl_ebit == 0 or vl_quotes_quantity == 0:
     return vl_ebit
 
   vl_p_ebit = acao_valor / (vl_ebit / vl_quotes_quantity)
@@ -458,7 +458,7 @@ def process_indicators():
 
   df_indicators = pd.DataFrame()
 
-  for cnpj in df['CNPJ_CIA'].unique()[2:3]:
+  for cnpj in df['CNPJ_CIA'].unique()[:20]:
     selecao_cnpj = df['CNPJ_CIA'] == cnpj
     df_cnpj = df[selecao_cnpj]
     selecao_data = df_cnpj['DT_REFER'] == date
