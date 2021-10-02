@@ -75,32 +75,33 @@
               <column datatype='string' name='cnpj' ordinal='1' />
               <column datatype='string' name='company' ordinal='2' />
               <column datatype='date' name='date' ordinal='3' />
-              <column datatype='real' name='dy' ordinal='4' />
-              <column datatype='real' name='pl' ordinal='5' />
-              <column datatype='real' name='pvp' ordinal='6' />
-              <column datatype='real' name='evebitda' ordinal='7' />
-              <column datatype='real' name='evebit' ordinal='8' />
-              <column datatype='real' name='pebitda' ordinal='9' />
-              <column datatype='real' name='pebit' ordinal='10' />
-              <column datatype='real' name='vpa' ordinal='11' />
-              <column datatype='real' name='pativo' ordinal='12' />
-              <column datatype='real' name='lpa' ordinal='13' />
-              <column datatype='real' name='psr' ordinal='14' />
-              <column datatype='real' name='pcapgiro' ordinal='15' />
-              <column datatype='real' name='pativcirqliq' ordinal='16' />
-              <column datatype='real' name='dlpl' ordinal='17' />
-              <column datatype='real' name='dlebit' ordinal='18' />
-              <column datatype='real' name='dlebitda' ordinal='19' />
-              <column datatype='real' name='plativos' ordinal='20' />
-              <column datatype='real' name='passivosativos' ordinal='21' />
-              <column datatype='real' name='liqcorrente' ordinal='22' />
-              <column datatype='real' name='mbruta' ordinal='23' />
-              <column datatype='real' name='mebit' ordinal='24' />
-              <column datatype='real' name='mebitda' ordinal='25' />
-              <column datatype='real' name='mliquida' ordinal='26' />
-              <column datatype='real' name='roe' ordinal='27' />
-              <column datatype='real' name='roa' ordinal='28' />
-              <column datatype='real' name='roic' ordinal='29' />
+              <column datatype='string' name='ticker' ordinal='4' />
+              <column datatype='real' name='dy' ordinal='5' />
+              <column datatype='real' name='pl' ordinal='6' />
+              <column datatype='real' name='pvp' ordinal='7' />
+              <column datatype='real' name='evebitda' ordinal='8' />
+              <column datatype='real' name='evebit' ordinal='9' />
+              <column datatype='real' name='pebitda' ordinal='10' />
+              <column datatype='real' name='pebit' ordinal='11' />
+              <column datatype='real' name='vpa' ordinal='12' />
+              <column datatype='real' name='pativo' ordinal='13' />
+              <column datatype='real' name='lpa' ordinal='14' />
+              <column datatype='real' name='psr' ordinal='15' />
+              <column datatype='real' name='pcapgiro' ordinal='16' />
+              <column datatype='real' name='pativcirqliq' ordinal='17' />
+              <column datatype='real' name='dlpl' ordinal='18' />
+              <column datatype='real' name='dlebit' ordinal='19' />
+              <column datatype='real' name='dlebitda' ordinal='20' />
+              <column datatype='real' name='plativos' ordinal='21' />
+              <column datatype='real' name='passivosativos' ordinal='22' />
+              <column datatype='real' name='liqcorrente' ordinal='23' />
+              <column datatype='real' name='mbruta' ordinal='24' />
+              <column datatype='real' name='mebit' ordinal='25' />
+              <column datatype='real' name='mebitda' ordinal='26' />
+              <column datatype='real' name='mliquida' ordinal='27' />
+              <column datatype='real' name='roe' ordinal='28' />
+              <column datatype='real' name='roa' ordinal='29' />
+              <column datatype='real' name='roic' ordinal='30' />
             </columns>
           </relation>
           <relation connection='textscan.1tb4i3b0ve3otb1aqsqc70elkmr3' name='quotes.csv' table='[quotes#csv]' type='table'>
@@ -156,6 +157,7 @@
           <map key='[roa]' value='[indicators.csv].[roa]' />
           <map key='[roe]' value='[indicators.csv].[roe]' />
           <map key='[roic]' value='[indicators.csv].[roic]' />
+          <map key='[ticker]' value='[indicators.csv].[ticker]' />
           <map key='[vpa]' value='[indicators.csv].[vpa]' />
         </cols>
         <metadata-records>
@@ -425,12 +427,27 @@
             <_.fcp.ObjectModelEncapsulateLegacy.true...object-id>[indicators.csv_0D96D446649E425FB82D33F500B21886]</_.fcp.ObjectModelEncapsulateLegacy.true...object-id>
           </metadata-record>
           <metadata-record class='column'>
+            <remote-name>ticker</remote-name>
+            <remote-type>129</remote-type>
+            <local-name>[ticker]</local-name>
+            <parent-name>[indicators.csv]</parent-name>
+            <remote-alias>ticker</remote-alias>
+            <ordinal>14</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <scale>1</scale>
+            <width>1073741823</width>
+            <contains-null>true</contains-null>
+            <collation flag='0' name='LEN_RUS' />
+            <_.fcp.ObjectModelEncapsulateLegacy.true...object-id>[indicators.csv_0D96D446649E425FB82D33F500B21886]</_.fcp.ObjectModelEncapsulateLegacy.true...object-id>
+          </metadata-record>
+          <metadata-record class='column'>
             <remote-name>dy</remote-name>
             <remote-type>5</remote-type>
             <local-name>[dy]</local-name>
             <parent-name>[indicators.csv]</parent-name>
             <remote-alias>dy</remote-alias>
-            <ordinal>14</ordinal>
+            <ordinal>15</ordinal>
             <local-type>real</local-type>
             <aggregation>Sum</aggregation>
             <contains-null>true</contains-null>
@@ -442,7 +459,7 @@
             <local-name>[pl]</local-name>
             <parent-name>[indicators.csv]</parent-name>
             <remote-alias>pl</remote-alias>
-            <ordinal>15</ordinal>
+            <ordinal>16</ordinal>
             <local-type>real</local-type>
             <aggregation>Sum</aggregation>
             <contains-null>true</contains-null>
@@ -454,7 +471,7 @@
             <local-name>[pvp]</local-name>
             <parent-name>[indicators.csv]</parent-name>
             <remote-alias>pvp</remote-alias>
-            <ordinal>16</ordinal>
+            <ordinal>17</ordinal>
             <local-type>real</local-type>
             <aggregation>Sum</aggregation>
             <contains-null>true</contains-null>
@@ -466,7 +483,7 @@
             <local-name>[evebitda]</local-name>
             <parent-name>[indicators.csv]</parent-name>
             <remote-alias>evebitda</remote-alias>
-            <ordinal>17</ordinal>
+            <ordinal>18</ordinal>
             <local-type>real</local-type>
             <aggregation>Sum</aggregation>
             <contains-null>true</contains-null>
@@ -478,7 +495,7 @@
             <local-name>[evebit]</local-name>
             <parent-name>[indicators.csv]</parent-name>
             <remote-alias>evebit</remote-alias>
-            <ordinal>18</ordinal>
+            <ordinal>19</ordinal>
             <local-type>real</local-type>
             <aggregation>Sum</aggregation>
             <contains-null>true</contains-null>
@@ -490,7 +507,7 @@
             <local-name>[pebitda]</local-name>
             <parent-name>[indicators.csv]</parent-name>
             <remote-alias>pebitda</remote-alias>
-            <ordinal>19</ordinal>
+            <ordinal>20</ordinal>
             <local-type>real</local-type>
             <aggregation>Sum</aggregation>
             <contains-null>true</contains-null>
@@ -502,7 +519,7 @@
             <local-name>[pebit]</local-name>
             <parent-name>[indicators.csv]</parent-name>
             <remote-alias>pebit</remote-alias>
-            <ordinal>20</ordinal>
+            <ordinal>21</ordinal>
             <local-type>real</local-type>
             <aggregation>Sum</aggregation>
             <contains-null>true</contains-null>
@@ -514,7 +531,7 @@
             <local-name>[vpa]</local-name>
             <parent-name>[indicators.csv]</parent-name>
             <remote-alias>vpa</remote-alias>
-            <ordinal>21</ordinal>
+            <ordinal>22</ordinal>
             <local-type>real</local-type>
             <aggregation>Sum</aggregation>
             <contains-null>true</contains-null>
@@ -526,7 +543,7 @@
             <local-name>[pativo]</local-name>
             <parent-name>[indicators.csv]</parent-name>
             <remote-alias>pativo</remote-alias>
-            <ordinal>22</ordinal>
+            <ordinal>23</ordinal>
             <local-type>real</local-type>
             <aggregation>Sum</aggregation>
             <contains-null>true</contains-null>
@@ -538,7 +555,7 @@
             <local-name>[lpa]</local-name>
             <parent-name>[indicators.csv]</parent-name>
             <remote-alias>lpa</remote-alias>
-            <ordinal>23</ordinal>
+            <ordinal>24</ordinal>
             <local-type>real</local-type>
             <aggregation>Sum</aggregation>
             <contains-null>true</contains-null>
@@ -550,7 +567,7 @@
             <local-name>[psr]</local-name>
             <parent-name>[indicators.csv]</parent-name>
             <remote-alias>psr</remote-alias>
-            <ordinal>24</ordinal>
+            <ordinal>25</ordinal>
             <local-type>real</local-type>
             <aggregation>Sum</aggregation>
             <contains-null>true</contains-null>
@@ -562,7 +579,7 @@
             <local-name>[pcapgiro]</local-name>
             <parent-name>[indicators.csv]</parent-name>
             <remote-alias>pcapgiro</remote-alias>
-            <ordinal>25</ordinal>
+            <ordinal>26</ordinal>
             <local-type>real</local-type>
             <aggregation>Sum</aggregation>
             <contains-null>true</contains-null>
@@ -574,7 +591,7 @@
             <local-name>[pativcirqliq]</local-name>
             <parent-name>[indicators.csv]</parent-name>
             <remote-alias>pativcirqliq</remote-alias>
-            <ordinal>26</ordinal>
+            <ordinal>27</ordinal>
             <local-type>real</local-type>
             <aggregation>Sum</aggregation>
             <contains-null>true</contains-null>
@@ -586,7 +603,7 @@
             <local-name>[dlpl]</local-name>
             <parent-name>[indicators.csv]</parent-name>
             <remote-alias>dlpl</remote-alias>
-            <ordinal>27</ordinal>
+            <ordinal>28</ordinal>
             <local-type>real</local-type>
             <aggregation>Sum</aggregation>
             <contains-null>true</contains-null>
@@ -598,7 +615,7 @@
             <local-name>[dlebit]</local-name>
             <parent-name>[indicators.csv]</parent-name>
             <remote-alias>dlebit</remote-alias>
-            <ordinal>28</ordinal>
+            <ordinal>29</ordinal>
             <local-type>real</local-type>
             <aggregation>Sum</aggregation>
             <contains-null>true</contains-null>
@@ -610,7 +627,7 @@
             <local-name>[dlebitda]</local-name>
             <parent-name>[indicators.csv]</parent-name>
             <remote-alias>dlebitda</remote-alias>
-            <ordinal>29</ordinal>
+            <ordinal>30</ordinal>
             <local-type>real</local-type>
             <aggregation>Sum</aggregation>
             <contains-null>true</contains-null>
@@ -622,7 +639,7 @@
             <local-name>[plativos]</local-name>
             <parent-name>[indicators.csv]</parent-name>
             <remote-alias>plativos</remote-alias>
-            <ordinal>30</ordinal>
+            <ordinal>31</ordinal>
             <local-type>real</local-type>
             <aggregation>Sum</aggregation>
             <contains-null>true</contains-null>
@@ -634,7 +651,7 @@
             <local-name>[passivosativos]</local-name>
             <parent-name>[indicators.csv]</parent-name>
             <remote-alias>passivosativos</remote-alias>
-            <ordinal>31</ordinal>
+            <ordinal>32</ordinal>
             <local-type>real</local-type>
             <aggregation>Sum</aggregation>
             <contains-null>true</contains-null>
@@ -646,7 +663,7 @@
             <local-name>[liqcorrente]</local-name>
             <parent-name>[indicators.csv]</parent-name>
             <remote-alias>liqcorrente</remote-alias>
-            <ordinal>32</ordinal>
+            <ordinal>33</ordinal>
             <local-type>real</local-type>
             <aggregation>Sum</aggregation>
             <contains-null>true</contains-null>
@@ -658,7 +675,7 @@
             <local-name>[mbruta]</local-name>
             <parent-name>[indicators.csv]</parent-name>
             <remote-alias>mbruta</remote-alias>
-            <ordinal>33</ordinal>
+            <ordinal>34</ordinal>
             <local-type>real</local-type>
             <aggregation>Sum</aggregation>
             <contains-null>true</contains-null>
@@ -670,7 +687,7 @@
             <local-name>[mebit]</local-name>
             <parent-name>[indicators.csv]</parent-name>
             <remote-alias>mebit</remote-alias>
-            <ordinal>34</ordinal>
+            <ordinal>35</ordinal>
             <local-type>real</local-type>
             <aggregation>Sum</aggregation>
             <contains-null>true</contains-null>
@@ -682,7 +699,7 @@
             <local-name>[mebitda]</local-name>
             <parent-name>[indicators.csv]</parent-name>
             <remote-alias>mebitda</remote-alias>
-            <ordinal>35</ordinal>
+            <ordinal>36</ordinal>
             <local-type>real</local-type>
             <aggregation>Sum</aggregation>
             <contains-null>true</contains-null>
@@ -694,7 +711,7 @@
             <local-name>[mliquida]</local-name>
             <parent-name>[indicators.csv]</parent-name>
             <remote-alias>mliquida</remote-alias>
-            <ordinal>36</ordinal>
+            <ordinal>37</ordinal>
             <local-type>real</local-type>
             <aggregation>Sum</aggregation>
             <contains-null>true</contains-null>
@@ -706,7 +723,7 @@
             <local-name>[roe]</local-name>
             <parent-name>[indicators.csv]</parent-name>
             <remote-alias>roe</remote-alias>
-            <ordinal>37</ordinal>
+            <ordinal>38</ordinal>
             <local-type>real</local-type>
             <aggregation>Sum</aggregation>
             <contains-null>true</contains-null>
@@ -718,7 +735,7 @@
             <local-name>[roa]</local-name>
             <parent-name>[indicators.csv]</parent-name>
             <remote-alias>roa</remote-alias>
-            <ordinal>38</ordinal>
+            <ordinal>39</ordinal>
             <local-type>real</local-type>
             <aggregation>Sum</aggregation>
             <contains-null>true</contains-null>
@@ -730,7 +747,7 @@
             <local-name>[roic]</local-name>
             <parent-name>[indicators.csv]</parent-name>
             <remote-alias>roic</remote-alias>
-            <ordinal>39</ordinal>
+            <ordinal>40</ordinal>
             <local-type>real</local-type>
             <aggregation>Sum</aggregation>
             <contains-null>true</contains-null>
@@ -742,7 +759,7 @@
             <local-name>[Date]</local-name>
             <parent-name>[quotes.csv]</parent-name>
             <remote-alias>Date</remote-alias>
-            <ordinal>40</ordinal>
+            <ordinal>41</ordinal>
             <local-type>date</local-type>
             <aggregation>Year</aggregation>
             <contains-null>true</contains-null>
@@ -754,7 +771,7 @@
             <local-name>[TICKER (quotes.csv)]</local-name>
             <parent-name>[quotes.csv]</parent-name>
             <remote-alias>TICKER</remote-alias>
-            <ordinal>41</ordinal>
+            <ordinal>42</ordinal>
             <local-type>string</local-type>
             <aggregation>Count</aggregation>
             <scale>1</scale>
@@ -769,7 +786,7 @@
             <local-name>[Adj Close]</local-name>
             <parent-name>[quotes.csv]</parent-name>
             <remote-alias>Adj Close</remote-alias>
-            <ordinal>42</ordinal>
+            <ordinal>43</ordinal>
             <local-type>real</local-type>
             <aggregation>Sum</aggregation>
             <contains-null>true</contains-null>
@@ -781,7 +798,7 @@
             <local-name>[Volume]</local-name>
             <parent-name>[quotes.csv]</parent-name>
             <remote-alias>Volume</remote-alias>
-            <ordinal>43</ordinal>
+            <ordinal>44</ordinal>
             <local-type>real</local-type>
             <aggregation>Sum</aggregation>
             <contains-null>true</contains-null>
@@ -809,8 +826,47 @@
       <_.fcp.ObjectModelTableType.true...column caption='indicators.csv' datatype='table' name='[__tableau_internal_object_id__].[indicators.csv_0D96D446649E425FB82D33F500B21886]' role='measure' type='quantitative' />
       <_.fcp.ObjectModelTableType.true...column caption='processed.csv' datatype='table' name='[__tableau_internal_object_id__].[processed.csv_E8FDD9DF71EB40819CE3E3EC79FBC6B6]' role='measure' type='quantitative' />
       <_.fcp.ObjectModelTableType.true...column caption='quotes.csv' datatype='table' name='[__tableau_internal_object_id__].[quotes.csv_F16F8D98CFA04892A603350A49736C56]' role='measure' type='quantitative' />
+      <column caption='dlebit-color' datatype='string' name='[dlebit (cópia)_976718192710635525]' role='dimension' type='nominal'>
+        <calculation class='tableau' formula='IF [dlebit] &gt;= 0 THEN &apos;green&apos; ELSE &apos;red&apos; END' />
+      </column>
+      <column caption='dlpl-color' datatype='string' name='[dlpl (cópia)_976718192710840327]' role='dimension' type='nominal'>
+        <calculation class='tableau' formula='IF [dlpl] &gt;= 0 THEN &apos;green&apos; ELSE &apos;red&apos; END' />
+      </column>
+      <column caption='dy-color' datatype='string' name='[dy (cópia)_976718192710168580]' role='dimension' type='nominal'>
+        <calculation class='tableau' formula='IF [dy] &gt;= 0 THEN &apos;green&apos; ELSE &apos;red&apos; END' />
+      </column>
       <column datatype='real' name='[dy]' role='dimension' type='ordinal' />
+      <column caption='evebit-color' datatype='string' name='[evebit (cópia)_976718192710889480]' role='dimension' type='nominal'>
+        <calculation class='tableau' formula='IF [evebit]  &gt;= 0 THEN &apos;green&apos; ELSE &apos;red&apos; END' />
+      </column>
+      <column caption='color-evebitda' datatype='string' name='[evebitda (cópia)_976718192709591042]' role='dimension' type='nominal'>
+        <calculation class='tableau' formula='IF [evebitda] &gt;= 0 THEN &apos;green&apos; ELSE &apos;red&apos; END' />
+      </column>
+      <column caption='evebitda-color' datatype='string' name='[evebitda (cópia)_976718192711094281]' role='dimension' type='nominal'>
+        <calculation class='tableau' formula='IF [evebitda] &gt;= 0 THEN &apos;green&apos; ELSE &apos;red&apos; END' />
+      </column>
+      <column caption='liqcorrente-color' datatype='string' name='[liqcorrente (cópia)_976718192711159818]' role='dimension' type='nominal'>
+        <calculation class='tableau' formula='IF [liqcorrente] &gt;= 0 THEN &apos;green&apos; ELSE &apos;red&apos; END' />
+      </column>
+      <column caption='lpa-color' datatype='string' name='[lpa (cópia)_976718192711249931]' role='dimension' type='nominal'>
+        <calculation class='tableau' formula='IF [lpa] &gt;= 0 THEN &apos;green&apos; ELSE &apos;red&apos; END' />
+      </column>
+      <column caption='mbruta-color' datatype='string' name='[mbruta (cópia)_976718192711376908]' role='dimension' type='nominal'>
+        <calculation class='tableau' formula='IF [mbruta] &gt;= 0 THEN &apos;green&apos; ELSE &apos;red&apos; END' />
+      </column>
+      <column caption='mebit-color' datatype='string' name='[mebit (cópia)_976718192711729165]' role='dimension' type='nominal'>
+        <calculation class='tableau' formula='IF [mebit] &gt;= 0 THEN &apos;green&apos; ELSE &apos;red&apos; END' />
+      </column>
+      <column caption='mebitda-color' datatype='real' name='[mebitda (cópia)_976718192711802894]' role='measure' type='quantitative'>
+        <calculation class='tableau' formula='[mebitda]' />
+      </column>
+      <column caption='color-pl' datatype='string' name='[pl (cópia)_976718192709951491]' role='dimension' type='nominal'>
+        <calculation class='tableau' formula='IF [pl] &gt;= 0 THEN &apos;green&apos; ELSE &apos;red&apos; END' />
+      </column>
+      <column-instance column='[dy (cópia)_976718192710168580]' derivation='None' name='[none:dy (cópia)_976718192710168580:ok]' pivot='key' type='nominal' />
       <column-instance column='[dy]' derivation='None' name='[none:dy:ok]' pivot='key' type='ordinal' />
+      <column-instance column='[evebitda (cópia)_976718192709591042]' derivation='None' name='[none:evebitda (cópia)_976718192709591042:nk]' pivot='key' type='nominal' />
+      <column-instance column='[pl (cópia)_976718192709951491]' derivation='None' name='[none:pl (cópia)_976718192709951491:nk]' pivot='key' type='nominal' />
       <group caption='Ação (Date selector)' hidden='true' name='[Action (Date selector)]' name-style='unqualified' user:auto-column='sheet_link'>
         <groupfilter function='crossjoin'>
           <groupfilter function='level-members' level='[Calculation_991354887816687617]' />
@@ -1241,6 +1297,26 @@
               <bucket>22774.483655288499</bucket>
             </map>
           </encoding>
+          <encoding attr='color' field='[none:Calculation_976718192680697856:nk]' type='palette'>
+            <map to='#e15759'>
+              <bucket>&quot;red&quot;</bucket>
+            </map>
+          </encoding>
+          <encoding attr='color' field='[none:evebitda (cópia)_976718192709591042:nk]' type='palette'>
+            <map to='#da323f'>
+              <bucket>&quot;red&quot;</bucket>
+            </map>
+          </encoding>
+          <encoding attr='color' field='[none:pl (cópia)_976718192709951491:nk]' type='palette'>
+            <map to='#61a956'>
+              <bucket>&quot;green&quot;</bucket>
+            </map>
+          </encoding>
+          <encoding attr='color' field='[none:dy (cópia)_976718192710168580:ok]' type='palette'>
+            <map to='#59a14f'>
+              <bucket>&quot;green&quot;</bucket>
+            </map>
+          </encoding>
         </style-rule>
       </style>
       <semantic-values>
@@ -1272,32 +1348,33 @@
                   <column datatype='string' name='cnpj' ordinal='1' />
                   <column datatype='string' name='company' ordinal='2' />
                   <column datatype='date' name='date' ordinal='3' />
-                  <column datatype='real' name='dy' ordinal='4' />
-                  <column datatype='real' name='pl' ordinal='5' />
-                  <column datatype='real' name='pvp' ordinal='6' />
-                  <column datatype='real' name='evebitda' ordinal='7' />
-                  <column datatype='real' name='evebit' ordinal='8' />
-                  <column datatype='real' name='pebitda' ordinal='9' />
-                  <column datatype='real' name='pebit' ordinal='10' />
-                  <column datatype='real' name='vpa' ordinal='11' />
-                  <column datatype='real' name='pativo' ordinal='12' />
-                  <column datatype='real' name='lpa' ordinal='13' />
-                  <column datatype='real' name='psr' ordinal='14' />
-                  <column datatype='real' name='pcapgiro' ordinal='15' />
-                  <column datatype='real' name='pativcirqliq' ordinal='16' />
-                  <column datatype='real' name='dlpl' ordinal='17' />
-                  <column datatype='real' name='dlebit' ordinal='18' />
-                  <column datatype='real' name='dlebitda' ordinal='19' />
-                  <column datatype='real' name='plativos' ordinal='20' />
-                  <column datatype='real' name='passivosativos' ordinal='21' />
-                  <column datatype='real' name='liqcorrente' ordinal='22' />
-                  <column datatype='real' name='mbruta' ordinal='23' />
-                  <column datatype='real' name='mebit' ordinal='24' />
-                  <column datatype='real' name='mebitda' ordinal='25' />
-                  <column datatype='real' name='mliquida' ordinal='26' />
-                  <column datatype='real' name='roe' ordinal='27' />
-                  <column datatype='real' name='roa' ordinal='28' />
-                  <column datatype='real' name='roic' ordinal='29' />
+                  <column datatype='string' name='ticker' ordinal='4' />
+                  <column datatype='real' name='dy' ordinal='5' />
+                  <column datatype='real' name='pl' ordinal='6' />
+                  <column datatype='real' name='pvp' ordinal='7' />
+                  <column datatype='real' name='evebitda' ordinal='8' />
+                  <column datatype='real' name='evebit' ordinal='9' />
+                  <column datatype='real' name='pebitda' ordinal='10' />
+                  <column datatype='real' name='pebit' ordinal='11' />
+                  <column datatype='real' name='vpa' ordinal='12' />
+                  <column datatype='real' name='pativo' ordinal='13' />
+                  <column datatype='real' name='lpa' ordinal='14' />
+                  <column datatype='real' name='psr' ordinal='15' />
+                  <column datatype='real' name='pcapgiro' ordinal='16' />
+                  <column datatype='real' name='pativcirqliq' ordinal='17' />
+                  <column datatype='real' name='dlpl' ordinal='18' />
+                  <column datatype='real' name='dlebit' ordinal='19' />
+                  <column datatype='real' name='dlebitda' ordinal='20' />
+                  <column datatype='real' name='plativos' ordinal='21' />
+                  <column datatype='real' name='passivosativos' ordinal='22' />
+                  <column datatype='real' name='liqcorrente' ordinal='23' />
+                  <column datatype='real' name='mbruta' ordinal='24' />
+                  <column datatype='real' name='mebit' ordinal='25' />
+                  <column datatype='real' name='mebitda' ordinal='26' />
+                  <column datatype='real' name='mliquida' ordinal='27' />
+                  <column datatype='real' name='roe' ordinal='28' />
+                  <column datatype='real' name='roa' ordinal='29' />
+                  <column datatype='real' name='roic' ordinal='30' />
                 </columns>
               </relation>
             </properties>
@@ -1333,9 +1410,19 @@
         </objects>
         <relationships>
           <relationship>
-            <expression op='='>
-              <expression op='[CNPJ_CIA]' />
-              <expression op='[cnpj]' />
+            <expression op='AND'>
+              <expression op='='>
+                <expression op='[CNPJ_CIA]' />
+                <expression op='[cnpj]' />
+              </expression>
+              <expression op='='>
+                <expression op='[DENOM_CIA]' />
+                <expression op='[company]' />
+              </expression>
+              <expression op='='>
+                <expression op='[TICKER]' />
+                <expression op='[ticker]' />
+              </expression>
             </expression>
             <first-end-point object-id='processed.csv_E8FDD9DF71EB40819CE3E3EC79FBC6B6' />
             <second-end-point object-id='indicators.csv_0D96D446649E425FB82D33F500B21886' />
@@ -1360,6 +1447,21 @@
       </_.fcp.ObjectModelEncapsulateLegacy.true...object-graph>
     </datasource>
   </datasources>
+  <shared-views>
+    <shared-view name='federated.1w3zz3z15zuvat123bhm30hjznqq'>
+      <datasources>
+        <datasource caption='accounts+' name='federated.1w3zz3z15zuvat123bhm30hjznqq' />
+      </datasources>
+      <datasource-dependencies datasource='federated.1w3zz3z15zuvat123bhm30hjznqq'>
+        <column datatype='string' name='[company]' role='dimension' type='nominal' />
+        <column-instance column='[company]' derivation='None' name='[none:company:nk]' pivot='key' type='nominal' />
+      </datasource-dependencies>
+      <filter class='categorical' column='[federated.1w3zz3z15zuvat123bhm30hjznqq].[none:company:nk]'>
+        <groupfilter function='member' level='[none:company:nk]' member='&quot;MAGAZINE LUIZA S.A.&quot;' user:ui-domain='relevant' user:ui-enumeration='inclusive' user:ui-marker='enumerate' />
+        <target field='[federated.1w3zz3z15zuvat123bhm30hjznqq].[none:company:nk]' />
+      </filter>
+    </shared-view>
+  </shared-views>
   <worksheets>
     <worksheet name='Cotas'>
       <layout-options>
@@ -1402,14 +1504,17 @@
             <column datatype='date' name='[Date]' role='dimension' type='ordinal' />
             <column datatype='string' name='[TICKER]' role='dimension' type='nominal' />
             <column-instance column='[Adj Close]' derivation='Avg' name='[avg:Adj Close:qk]' pivot='key' type='quantitative' />
+            <column datatype='string' name='[company]' role='dimension' type='nominal' />
             <column-instance column='[Calculation_991354887816687617]' derivation='None' name='[none:Calculation_991354887816687617:ok]' pivot='key' type='ordinal' />
             <column-instance column='[TICKER]' derivation='None' name='[none:TICKER:nk]' pivot='key' type='nominal' />
+            <column-instance column='[company]' derivation='None' name='[none:company:nk]' pivot='key' type='nominal' />
           </datasource-dependencies>
           <filter class='categorical' column='[federated.1w3zz3z15zuvat123bhm30hjznqq].[none:Calculation_991354887816687617:ok]'>
             <groupfilter function='level-members' level='[none:Calculation_991354887816687617:ok]' user:ui-enumeration='all' user:ui-marker='enumerate' />
           </filter>
           <slices>
             <column>[federated.1w3zz3z15zuvat123bhm30hjznqq].[none:Calculation_991354887816687617:ok]</column>
+            <column>[federated.1w3zz3z15zuvat123bhm30hjznqq].[none:company:nk]</column>
           </slices>
           <aggregation value='true' />
         </view>
@@ -1476,9 +1581,18 @@
             <datasource caption='accounts+' name='federated.1w3zz3z15zuvat123bhm30hjznqq' />
           </datasources>
           <datasource-dependencies datasource='federated.1w3zz3z15zuvat123bhm30hjznqq'>
+            <column datatype='string' name='[company]' role='dimension' type='nominal' />
+            <column caption='dy-color' datatype='string' name='[dy (cópia)_976718192710168580]' role='dimension' type='nominal'>
+              <calculation class='tableau' formula='IF [dy] &gt;= 0 THEN &apos;green&apos; ELSE &apos;red&apos; END' />
+            </column>
             <column datatype='real' name='[dy]' role='dimension' type='ordinal' />
+            <column-instance column='[company]' derivation='None' name='[none:company:nk]' pivot='key' type='nominal' />
+            <column-instance column='[dy (cópia)_976718192710168580]' derivation='None' name='[none:dy (cópia)_976718192710168580:ok]' pivot='key' type='nominal' />
             <column-instance column='[dy]' derivation='Sum' name='[sum:dy:qk]' pivot='key' type='quantitative' />
           </datasource-dependencies>
+          <slices>
+            <column>[federated.1w3zz3z15zuvat123bhm30hjznqq].[none:company:nk]</column>
+          </slices>
           <aggregation value='true' />
         </view>
         <style>
@@ -1563,15 +1677,15 @@
             <mark class='Text' />
             <mark-sizing mark-sizing-setting='marks-scaling-off' />
             <encodings>
-              <color column='[federated.1w3zz3z15zuvat123bhm30hjznqq].[sum:dy:qk]' />
+              <color column='[federated.1w3zz3z15zuvat123bhm30hjznqq].[none:dy (cópia)_976718192710168580:ok]' />
               <lod column='[federated.1w3zz3z15zuvat123bhm30hjznqq].[sum:dy:qk]' />
               <text column='[federated.1w3zz3z15zuvat123bhm30hjznqq].[sum:dy:qk]' />
             </encodings>
             <customized-tooltip>
               <formatted-text>
-                <run fontcolor='#000000'>P / L:</run>
-                <run>Æ&#10;</run>
-                <run fontcolor='#000000'><![CDATA[<[federated.1w3zz3z15zuvat123bhm30hjznqq].[sum:dy:qk]>]]></run>
+                <run bold='true' fontcolor='#000000'>Indicador utilizado para relacionar os proventos pagos por uma companhia e o preço atual de suas ações.</run>
+                <run>Æ&#10;&#10;</run>
+                <run bold='true' fontcolor='#555555'>Dividendos pagos no período / Preço ação</run>
               </formatted-text>
             </customized-tooltip>
             <customized-label>
@@ -1624,9 +1738,14 @@
             <datasource caption='accounts+' name='federated.1w3zz3z15zuvat123bhm30hjznqq' />
           </datasources>
           <datasource-dependencies datasource='federated.1w3zz3z15zuvat123bhm30hjznqq'>
+            <column datatype='string' name='[company]' role='dimension' type='nominal' />
             <column datatype='real' name='[dlebit]' role='measure' type='quantitative' />
+            <column-instance column='[company]' derivation='None' name='[none:company:nk]' pivot='key' type='nominal' />
             <column-instance column='[dlebit]' derivation='Sum' name='[sum:dlebit:qk]' pivot='key' type='quantitative' />
           </datasource-dependencies>
+          <slices>
+            <column>[federated.1w3zz3z15zuvat123bhm30hjznqq].[none:company:nk]</column>
+          </slices>
           <aggregation value='true' />
         </view>
         <style>
@@ -1707,11 +1826,9 @@
             </encodings>
             <customized-tooltip>
               <formatted-text>
-                <run fontcolor='#000000'>DÍV. LÍQUIDA /</run>
-                <run>Æ&#10;</run>
-                <run fontcolor='#000000'>EBIT</run>
-                <run>Æ&#10;</run>
-                <run fontcolor='#000000'><![CDATA[<[federated.1w3zz3z15zuvat123bhm30hjznqq].[sum:dlebit:qk]>]]></run>
+                <run bold='true' fontcolor='#000000'>Indica quanto tempo seria necessário para pagar a dívida líquida da empresa considerando o EBIT atual. Indica também o grau de endividamento da companhia.</run>
+                <run>Æ&#10;&#10;</run>
+                <run bold='true' fontcolor='#555555'>Dívida líquida / EBIT</run>
               </formatted-text>
             </customized-tooltip>
             <customized-label>
@@ -1760,9 +1877,14 @@
             <datasource caption='accounts+' name='federated.1w3zz3z15zuvat123bhm30hjznqq' />
           </datasources>
           <datasource-dependencies datasource='federated.1w3zz3z15zuvat123bhm30hjznqq'>
+            <column datatype='string' name='[company]' role='dimension' type='nominal' />
             <column datatype='real' name='[dlebitda]' role='measure' type='quantitative' />
+            <column-instance column='[company]' derivation='None' name='[none:company:nk]' pivot='key' type='nominal' />
             <column-instance column='[dlebitda]' derivation='Sum' name='[sum:dlebitda:qk]' pivot='key' type='quantitative' />
           </datasource-dependencies>
+          <slices>
+            <column>[federated.1w3zz3z15zuvat123bhm30hjznqq].[none:company:nk]</column>
+          </slices>
           <aggregation value='true' />
         </view>
         <style>
@@ -1856,9 +1978,9 @@
             </encodings>
             <customized-tooltip>
               <formatted-text>
-                <run fontcolor='#000000'>P / ATIVO CIRC. LÍQ:</run>
-                <run>Æ&#10;</run>
-                <run fontcolor='#000000'><![CDATA[<[federated.1w3zz3z15zuvat123bhm30hjznqq].[sum:dlebitda:qk]>]]></run>
+                <run bold='true' fontcolor='#000000'>Indica quanto tempo seria necessário para pagar a dívida líquida da empresa considerando o EBITDA atual. Indica também o grau de endividamento da companhia.</run>
+                <run>Æ&#10;&#10;</run>
+                <run bold='true' fontcolor='#555555'>Dívida líquida / EBITDA</run>
               </formatted-text>
             </customized-tooltip>
             <customized-label>
@@ -1911,9 +2033,14 @@
             <datasource caption='accounts+' name='federated.1w3zz3z15zuvat123bhm30hjznqq' />
           </datasources>
           <datasource-dependencies datasource='federated.1w3zz3z15zuvat123bhm30hjznqq'>
+            <column datatype='string' name='[company]' role='dimension' type='nominal' />
             <column datatype='real' name='[dlpl]' role='measure' type='quantitative' />
+            <column-instance column='[company]' derivation='None' name='[none:company:nk]' pivot='key' type='nominal' />
             <column-instance column='[dlpl]' derivation='Sum' name='[sum:dlpl:qk]' pivot='key' type='quantitative' />
           </datasource-dependencies>
+          <slices>
+            <column>[federated.1w3zz3z15zuvat123bhm30hjznqq].[none:company:nk]</column>
+          </slices>
           <aggregation value='true' />
         </view>
         <style>
@@ -2006,9 +2133,9 @@
             </encodings>
             <customized-tooltip>
               <formatted-text>
-                <run fontcolor='#000000'>P / ATIVO CIRC. LÍQ:</run>
-                <run>Æ&#10;</run>
-                <run fontcolor='#000000'><![CDATA[<[federated.1w3zz3z15zuvat123bhm30hjznqq].[sum:dlpl:qk]>]]></run>
+                <run bold='true' fontcolor='#000000'>Indica quanto de dívida uma empresa está usando para financiar os seus ativos em relação ao patrimônio dos acionistas.</run>
+                <run>Æ&#10;&#10;</run>
+                <run bold='true' fontcolor='#555555'>Dívida líquida / Patrimônio líquido</run>
               </formatted-text>
             </customized-tooltip>
             <customized-label>
@@ -2061,9 +2188,14 @@
             <datasource caption='accounts+' name='federated.1w3zz3z15zuvat123bhm30hjznqq' />
           </datasources>
           <datasource-dependencies datasource='federated.1w3zz3z15zuvat123bhm30hjznqq'>
+            <column datatype='string' name='[company]' role='dimension' type='nominal' />
             <column datatype='real' name='[evebit]' role='measure' type='quantitative' />
+            <column-instance column='[company]' derivation='None' name='[none:company:nk]' pivot='key' type='nominal' />
             <column-instance column='[evebit]' derivation='Sum' name='[sum:evebit:qk]' pivot='key' type='quantitative' />
           </datasource-dependencies>
+          <slices>
+            <column>[federated.1w3zz3z15zuvat123bhm30hjznqq].[none:company:nk]</column>
+          </slices>
           <aggregation value='true' />
         </view>
         <style>
@@ -2153,9 +2285,9 @@
             </encodings>
             <customized-tooltip>
               <formatted-text>
-                <run fontcolor='#000000'>EV / EBIT:</run>
-                <run>Æ&#10;</run>
-                <run fontcolor='#000000'><![CDATA[<[federated.1w3zz3z15zuvat123bhm30hjznqq].[sum:evebit:qk]>]]></run>
+                <run bold='true' fontcolor='#000000'>O EV (Enterprise Value ou Valor da Firma), indica quanto custaria para comprar todos os ativos da companhia, descontando o caixa. Este indicador mostra quanto tempo levaria para o valor calculado no EBIT pagar o investimento feito para compra-la.</run>
+                <run>Æ&#10;&#10;</run>
+                <run bold='true' fontcolor='#555555'>EV / EBIT</run>
               </formatted-text>
             </customized-tooltip>
             <customized-label>
@@ -2225,9 +2357,22 @@
             <datasource caption='accounts+' name='federated.1w3zz3z15zuvat123bhm30hjznqq' />
           </datasources>
           <datasource-dependencies datasource='federated.1w3zz3z15zuvat123bhm30hjznqq'>
+            <column datatype='string' name='[company]' role='dimension' type='nominal' />
+            <column caption='color-evebitda' datatype='string' name='[evebitda (cópia)_976718192709591042]' role='dimension' type='nominal'>
+              <calculation class='tableau' formula='IF [evebitda] &gt;= 0 THEN &apos;green&apos; ELSE &apos;red&apos; END' />
+            </column>
             <column datatype='real' name='[evebitda]' role='measure' type='quantitative' />
+            <column-instance column='[company]' derivation='None' name='[none:company:nk]' pivot='key' type='nominal' />
+            <column-instance column='[evebitda (cópia)_976718192709591042]' derivation='None' name='[none:evebitda (cópia)_976718192709591042:nk]' pivot='key' type='nominal' />
             <column-instance column='[evebitda]' derivation='Sum' name='[sum:evebitda:qk]' pivot='key' type='quantitative' />
           </datasource-dependencies>
+          <filter class='categorical' column='[federated.1w3zz3z15zuvat123bhm30hjznqq].[:Measure Names]'>
+            <groupfilter function='level-members' level='[:Measure Names]' />
+          </filter>
+          <slices>
+            <column>[federated.1w3zz3z15zuvat123bhm30hjznqq].[none:company:nk]</column>
+            <column>[federated.1w3zz3z15zuvat123bhm30hjznqq].[:Measure Names]</column>
+          </slices>
           <aggregation value='true' />
         </view>
         <style>
@@ -2311,15 +2456,15 @@
             <mark class='Text' />
             <mark-sizing mark-sizing-setting='marks-scaling-off' />
             <encodings>
-              <color column='[federated.1w3zz3z15zuvat123bhm30hjznqq].[sum:evebitda:qk]' />
+              <color column='[federated.1w3zz3z15zuvat123bhm30hjznqq].[none:evebitda (cópia)_976718192709591042:nk]' />
               <lod column='[federated.1w3zz3z15zuvat123bhm30hjznqq].[sum:evebitda:qk]' />
               <text column='[federated.1w3zz3z15zuvat123bhm30hjznqq].[sum:evebitda:qk]' />
             </encodings>
             <customized-tooltip>
               <formatted-text>
-                <run fontcolor='#000000'>EV / EBITDA:</run>
-                <run>Æ&#10;</run>
-                <run fontcolor='#000000'><![CDATA[<[federated.1w3zz3z15zuvat123bhm30hjznqq].[sum:evebitda:qk]>]]></run>
+                <run bold='true' fontcolor='#000000'>O EV (Enterprise Value ou Valor da Firma), indica quanto custaria para comprar todos os ativos da companhia, descontando o caixa. Este indicador mostra quanto tempo levaria para o valor calculado no EBITDA pagar o investimento feito para compra-la.</run>
+                <run>Æ&#10;&#10;</run>
+                <run bold='true' fontcolor='#555555'>EV / EBITDA</run>
               </formatted-text>
             </customized-tooltip>
             <customized-label>
@@ -2349,31 +2494,10 @@
         </panes>
         <rows>[federated.1w3zz3z15zuvat123bhm30hjznqq].[sum:evebitda:qk]</rows>
         <cols />
-        <mark-labels>
-          <mark-label id='0'>
-            <tuple-reference>
-              <tuple-descriptor>
-                <pane-descriptor>
-                  <x-fields />
-                  <y-fields>
-                    <field>[federated.1w3zz3z15zuvat123bhm30hjznqq].[sum:evebitda:qk]</field>
-                  </y-fields>
-                </pane-descriptor>
-                <columns>
-                  <field>[federated.1w3zz3z15zuvat123bhm30hjznqq].[sum:evebitda:qk]</field>
-                </columns>
-              </tuple-descriptor>
-              <tuple>
-                <value>-55.820315792692952</value>
-              </tuple>
-            </tuple-reference>
-            <label-position x='0.512586' y='0.485126' />
-          </mark-label>
-        </mark-labels>
       </table>
       <simple-id uuid='{BDDDA4AA-1638-45C5-92E6-15385F15416F}' />
     </worksheet>
-    <worksheet name='Empresas'>
+    <worksheet name='Filtro Empresas'>
       <table>
         <view>
           <datasources>
@@ -2383,9 +2507,6 @@
             <column datatype='string' name='[company]' role='dimension' type='nominal' />
             <column-instance column='[company]' derivation='None' name='[none:company:nk]' pivot='key' type='nominal' />
           </datasource-dependencies>
-          <filter class='categorical' column='[federated.1w3zz3z15zuvat123bhm30hjznqq].[none:company:nk]'>
-            <groupfilter function='member' level='[none:company:nk]' member='&quot;AGROGALAXY PARTICIPAÇÕES S.A.&quot;' user:ui-domain='relevant' user:ui-enumeration='inclusive' user:ui-marker='enumerate' />
-          </filter>
           <slices>
             <column>[federated.1w3zz3z15zuvat123bhm30hjznqq].[none:company:nk]</column>
           </slices>
@@ -2394,6 +2515,21 @@
         <style>
           <style-rule element='cell'>
             <format attr='width' value='960' />
+          </style-rule>
+          <style-rule element='quick-filter'>
+            <format attr='font-family' value='Arial' />
+            <format attr='font-size' value='12' />
+            <format attr='title' field='[federated.1w3zz3z15zuvat123bhm30hjznqq].[none:company:nk]' value='Empresa:'>
+              <formatted-text>
+                <run>Empresa:</run>
+              </formatted-text>
+            </format>
+          </style-rule>
+          <style-rule element='quick-filter-title'>
+            <format attr='font-family' value='Arial' />
+            <format attr='font-weight' value='bold' />
+            <format attr='font-style' value='italic' />
+            <format attr='font-size' value='20' />
           </style-rule>
         </style>
         <panes>
@@ -2407,9 +2543,9 @@
             </encodings>
             <customized-label>
               <formatted-text>
-                <run bold='true' fontname='Arial' fontsize='20'>&lt;</run>
-                <run bold='true' fontname='Arial' fontsize='20'>[federated.1w3zz3z15zuvat123bhm30hjznqq].[none:company:nk]</run>
-                <run bold='true' fontname='Arial' fontsize='20'>&gt;</run>
+                <run bold='true' fontsize='20'>&lt;</run>
+                <run bold='true' fontsize='20'>[federated.1w3zz3z15zuvat123bhm30hjznqq].[none:company:nk]</run>
+                <run bold='true' fontsize='20'>&gt;</run>
               </formatted-text>
             </customized-label>
             <style>
@@ -2445,9 +2581,14 @@
             <datasource caption='accounts+' name='federated.1w3zz3z15zuvat123bhm30hjznqq' />
           </datasources>
           <datasource-dependencies datasource='federated.1w3zz3z15zuvat123bhm30hjznqq'>
+            <column datatype='string' name='[company]' role='dimension' type='nominal' />
             <column datatype='real' name='[lpa]' role='measure' type='quantitative' />
+            <column-instance column='[company]' derivation='None' name='[none:company:nk]' pivot='key' type='nominal' />
             <column-instance column='[lpa]' derivation='Sum' name='[sum:lpa:qk]' pivot='key' type='quantitative' />
           </datasource-dependencies>
+          <slices>
+            <column>[federated.1w3zz3z15zuvat123bhm30hjznqq].[none:company:nk]</column>
+          </slices>
           <aggregation value='true' />
         </view>
         <style>
@@ -2537,9 +2678,9 @@
             </encodings>
             <customized-tooltip>
               <formatted-text>
-                <run fontcolor='#000000'>P / SR</run>
-                <run>Æ&#10;</run>
-                <run fontcolor='#000000'><![CDATA[<[federated.1w3zz3z15zuvat123bhm30hjznqq].[sum:lpa:qk]>]]></run>
+                <run bold='true' fontcolor='#000000'>Indicar se a empresa é ou não lucrativa. Se este número estiver negativo, a empresa está com margens baixas, acumulando prejuízos.</run>
+                <run>Æ&#10;&#10;</run>
+                <run bold='true' fontcolor='#555555'>Lucro líquido / Nº de ações</run>
               </formatted-text>
             </customized-tooltip>
             <customized-label>
@@ -2592,9 +2733,14 @@
             <datasource caption='accounts+' name='federated.1w3zz3z15zuvat123bhm30hjznqq' />
           </datasources>
           <datasource-dependencies datasource='federated.1w3zz3z15zuvat123bhm30hjznqq'>
+            <column datatype='string' name='[company]' role='dimension' type='nominal' />
             <column datatype='real' name='[liqcorrente]' role='measure' type='quantitative' />
+            <column-instance column='[company]' derivation='None' name='[none:company:nk]' pivot='key' type='nominal' />
             <column-instance column='[liqcorrente]' derivation='Sum' name='[sum:liqcorrente:qk]' pivot='key' type='quantitative' />
           </datasource-dependencies>
+          <slices>
+            <column>[federated.1w3zz3z15zuvat123bhm30hjznqq].[none:company:nk]</column>
+          </slices>
           <aggregation value='true' />
         </view>
         <style>
@@ -2671,11 +2817,9 @@
             </encodings>
             <customized-tooltip>
               <formatted-text>
-                <run fontcolor='#000000'>PL /</run>
-                <run>Æ&#10;</run>
-                <run fontcolor='#000000'>ATIVOS</run>
-                <run>Æ&#10;</run>
-                <run fontcolor='#000000'><![CDATA[<[federated.1w3zz3z15zuvat123bhm30hjznqq].[sum:liqcorrente:qk]>]]></run>
+                <run bold='true' fontcolor='#000000'>Indica a capacidade de pagamento da empresa no curto prazo.</run>
+                <run>Æ&#10;&#10;</run>
+                <run bold='true' fontcolor='#555555'>Ativo circulante / Passivo circulante</run>
               </formatted-text>
             </customized-tooltip>
             <customized-label>
@@ -2724,9 +2868,16 @@
             <datasource caption='accounts+' name='federated.1w3zz3z15zuvat123bhm30hjznqq' />
           </datasources>
           <datasource-dependencies datasource='federated.1w3zz3z15zuvat123bhm30hjznqq'>
+            <column datatype='string' name='[CD_CONTA (processed.csv)]' role='dimension' type='nominal' />
+            <column-instance column='[CD_CONTA (processed.csv)]' derivation='Attribute' name='[attr:CD_CONTA (processed.csv):nk]' pivot='key' type='nominal' />
+            <column datatype='string' name='[company]' role='dimension' type='nominal' />
             <column datatype='real' name='[mbruta]' role='measure' type='quantitative' />
+            <column-instance column='[company]' derivation='None' name='[none:company:nk]' pivot='key' type='nominal' />
             <column-instance column='[mbruta]' derivation='Sum' name='[sum:mbruta:qk]' pivot='key' type='quantitative' />
           </datasource-dependencies>
+          <slices>
+            <column>[federated.1w3zz3z15zuvat123bhm30hjznqq].[none:company:nk]</column>
+          </slices>
           <aggregation value='true' />
         </view>
         <style>
@@ -2816,13 +2967,14 @@
             <encodings>
               <color column='[federated.1w3zz3z15zuvat123bhm30hjznqq].[sum:mbruta:qk]' />
               <lod column='[federated.1w3zz3z15zuvat123bhm30hjznqq].[sum:mbruta:qk]' />
+              <tooltip column='[federated.1w3zz3z15zuvat123bhm30hjznqq].[attr:CD_CONTA (processed.csv):nk]' />
               <text column='[federated.1w3zz3z15zuvat123bhm30hjznqq].[sum:mbruta:qk]' />
             </encodings>
             <customized-tooltip>
               <formatted-text>
-                <run fontcolor='#000000'>MARGEM BRUTA</run>
-                <run>Æ&#10;</run>
-                <run fontcolor='#000000'><![CDATA[<[federated.1w3zz3z15zuvat123bhm30hjznqq].[sum:mbruta:qk]>]]></run>
+                <run bold='true' fontcolor='#000000'>Mede, objetivamente, o quanto a empresa ganha com a venda de seus produtos.</run>
+                <run>Æ&#10;&#10;</run>
+                <run bold='true' fontcolor='#555555'>Lucro bruto / Receita líquida</run>
               </formatted-text>
             </customized-tooltip>
             <customized-label>
@@ -2871,9 +3023,14 @@
             <datasource caption='accounts+' name='federated.1w3zz3z15zuvat123bhm30hjznqq' />
           </datasources>
           <datasource-dependencies datasource='federated.1w3zz3z15zuvat123bhm30hjznqq'>
+            <column datatype='string' name='[company]' role='dimension' type='nominal' />
             <column datatype='real' name='[mebit]' role='measure' type='quantitative' />
+            <column-instance column='[company]' derivation='None' name='[none:company:nk]' pivot='key' type='nominal' />
             <column-instance column='[mebit]' derivation='Sum' name='[sum:mebit:qk]' pivot='key' type='quantitative' />
           </datasource-dependencies>
+          <slices>
+            <column>[federated.1w3zz3z15zuvat123bhm30hjznqq].[none:company:nk]</column>
+          </slices>
           <aggregation value='true' />
         </view>
         <style>
@@ -2950,9 +3107,9 @@
             </encodings>
             <customized-tooltip>
               <formatted-text>
-                <run fontcolor='#000000'>MARGEM BRUTA</run>
-                <run>Æ&#10;</run>
-                <run fontcolor='#000000'><![CDATA[<[federated.1w3zz3z15zuvat123bhm30hjznqq].[sum:mebit:qk]>]]></run>
+                <run bold='true' fontcolor='#000000'>Útil para comparar a lucratividade operacional de empresas do mesmo segmento, além de contribuir para avaliar o crescimento da eficiência produtiva de um negócio ao longo do tempo.</run>
+                <run>Æ&#10;&#10;</run>
+                <run bold='true' fontcolor='#555555'>EBIT / Receita líquida</run>
               </formatted-text>
             </customized-tooltip>
             <customized-label>
@@ -3001,9 +3158,14 @@
             <datasource caption='accounts+' name='federated.1w3zz3z15zuvat123bhm30hjznqq' />
           </datasources>
           <datasource-dependencies datasource='federated.1w3zz3z15zuvat123bhm30hjznqq'>
+            <column datatype='string' name='[company]' role='dimension' type='nominal' />
             <column datatype='real' name='[mebitda]' role='measure' type='quantitative' />
+            <column-instance column='[company]' derivation='None' name='[none:company:nk]' pivot='key' type='nominal' />
             <column-instance column='[mebitda]' derivation='Sum' name='[sum:mebitda:qk]' pivot='key' type='quantitative' />
           </datasource-dependencies>
+          <slices>
+            <column>[federated.1w3zz3z15zuvat123bhm30hjznqq].[none:company:nk]</column>
+          </slices>
           <aggregation value='true' />
         </view>
         <style>
@@ -3084,9 +3246,9 @@
             </encodings>
             <customized-tooltip>
               <formatted-text>
-                <run fontcolor='#000000'>MARGEM BRUTA</run>
-                <run>Æ&#10;</run>
-                <run fontcolor='#000000'><![CDATA[<[federated.1w3zz3z15zuvat123bhm30hjznqq].[sum:mebitda:qk]>]]></run>
+                <run bold='true' fontcolor='#000000'>É o percentual da divisão entre o EBITDA (Earnings before interest, taxes, depreciation and amortization) e a receita líquida de uma companhia. Muito útil para se comparar a lucratividade operacional da empresa.</run>
+                <run>Æ&#10;&#10;</run>
+                <run bold='true' fontcolor='#555555'>EBITDA / Receita líquida</run>
               </formatted-text>
             </customized-tooltip>
             <customized-label>
@@ -3135,9 +3297,14 @@
             <datasource caption='accounts+' name='federated.1w3zz3z15zuvat123bhm30hjznqq' />
           </datasources>
           <datasource-dependencies datasource='federated.1w3zz3z15zuvat123bhm30hjznqq'>
+            <column datatype='string' name='[company]' role='dimension' type='nominal' />
             <column datatype='real' name='[mliquida]' role='measure' type='quantitative' />
+            <column-instance column='[company]' derivation='None' name='[none:company:nk]' pivot='key' type='nominal' />
             <column-instance column='[mliquida]' derivation='Sum' name='[sum:mliquida:qk]' pivot='key' type='quantitative' />
           </datasource-dependencies>
+          <slices>
+            <column>[federated.1w3zz3z15zuvat123bhm30hjznqq].[none:company:nk]</column>
+          </slices>
           <aggregation value='true' />
         </view>
         <style>
@@ -3214,9 +3381,9 @@
             </encodings>
             <customized-tooltip>
               <formatted-text>
-                <run fontcolor='#000000'>MARGEM BRUTA</run>
-                <run>Æ&#10;</run>
-                <run fontcolor='#000000'><![CDATA[<[federated.1w3zz3z15zuvat123bhm30hjznqq].[sum:mliquida:qk]>]]></run>
+                <run bold='true' fontcolor='#000000'>Revela a porcentagem de lucro em relação às receitas de uma empresa.</run>
+                <run>Æ&#10;&#10;</run>
+                <run bold='true' fontcolor='#555555'>Lucro líquido / Receita líquida</run>
               </formatted-text>
             </customized-tooltip>
             <customized-label>
@@ -3265,9 +3432,14 @@
             <datasource caption='accounts+' name='federated.1w3zz3z15zuvat123bhm30hjznqq' />
           </datasources>
           <datasource-dependencies datasource='federated.1w3zz3z15zuvat123bhm30hjznqq'>
+            <column datatype='string' name='[company]' role='dimension' type='nominal' />
+            <column-instance column='[company]' derivation='None' name='[none:company:nk]' pivot='key' type='nominal' />
             <column datatype='real' name='[pativo]' role='measure' type='quantitative' />
             <column-instance column='[pativo]' derivation='Sum' name='[sum:pativo:qk]' pivot='key' type='quantitative' />
           </datasource-dependencies>
+          <slices>
+            <column>[federated.1w3zz3z15zuvat123bhm30hjznqq].[none:company:nk]</column>
+          </slices>
           <aggregation value='true' />
         </view>
         <style>
@@ -3357,9 +3529,9 @@
             </encodings>
             <customized-tooltip>
               <formatted-text>
-                <run fontcolor='#000000'>P / ATIVO:</run>
-                <run>Æ&#10;</run>
-                <run fontcolor='#000000'><![CDATA[<[federated.1w3zz3z15zuvat123bhm30hjznqq].[sum:pativo:qk]>]]></run>
+                <run bold='true' fontcolor='#000000'>Preço da ação dividido pelos Ativos totais por ação.</run>
+                <run>Æ&#10;&#10;</run>
+                <run bold='true' fontcolor='#555555'>Preço atual / Ativos</run>
               </formatted-text>
             </customized-tooltip>
             <customized-label>
@@ -3408,9 +3580,14 @@
             <datasource caption='accounts+' name='federated.1w3zz3z15zuvat123bhm30hjznqq' />
           </datasources>
           <datasource-dependencies datasource='federated.1w3zz3z15zuvat123bhm30hjznqq'>
+            <column datatype='string' name='[company]' role='dimension' type='nominal' />
+            <column-instance column='[company]' derivation='None' name='[none:company:nk]' pivot='key' type='nominal' />
             <column datatype='real' name='[pativcirqliq]' role='measure' type='quantitative' />
             <column-instance column='[pativcirqliq]' derivation='Sum' name='[sum:pativcirqliq:qk]' pivot='key' type='quantitative' />
           </datasource-dependencies>
+          <slices>
+            <column>[federated.1w3zz3z15zuvat123bhm30hjznqq].[none:company:nk]</column>
+          </slices>
           <aggregation value='true' />
         </view>
         <style>
@@ -3500,9 +3677,9 @@
             </encodings>
             <customized-tooltip>
               <formatted-text>
-                <run fontcolor='#000000'>P / ATIVO CIRC. LÍQ:</run>
-                <run>Æ&#10;</run>
-                <run fontcolor='#000000'><![CDATA[<[federated.1w3zz3z15zuvat123bhm30hjznqq].[sum:pativcirqliq:qk]>]]></run>
+                <run bold='true' fontcolor='#000000'>É a diferença entre o ativo circulante e o passivo que constam do balanço patrimonial de uma empresa.</run>
+                <run>Æ&#10;&#10;</run>
+                <run bold='true' fontcolor='#555555'>Preço atual / Ativos Circulantes Líquidos por ação</run>
               </formatted-text>
             </customized-tooltip>
             <customized-label>
@@ -3555,9 +3732,14 @@
             <datasource caption='accounts+' name='federated.1w3zz3z15zuvat123bhm30hjznqq' />
           </datasources>
           <datasource-dependencies datasource='federated.1w3zz3z15zuvat123bhm30hjznqq'>
+            <column datatype='string' name='[company]' role='dimension' type='nominal' />
+            <column-instance column='[company]' derivation='None' name='[none:company:nk]' pivot='key' type='nominal' />
             <column datatype='real' name='[pcapgiro]' role='measure' type='quantitative' />
             <column-instance column='[pcapgiro]' derivation='Sum' name='[sum:pcapgiro:qk]' pivot='key' type='quantitative' />
           </datasource-dependencies>
+          <slices>
+            <column>[federated.1w3zz3z15zuvat123bhm30hjznqq].[none:company:nk]</column>
+          </slices>
           <aggregation value='true' />
         </view>
         <style>
@@ -3647,9 +3829,9 @@
             </encodings>
             <customized-tooltip>
               <formatted-text>
-                <run fontcolor='#000000'>P / CAP. GIRO:</run>
-                <run>Æ&#10;</run>
-                <run fontcolor='#000000'><![CDATA[<[federated.1w3zz3z15zuvat123bhm30hjznqq].[sum:pcapgiro:qk]>]]></run>
+                <run bold='true' fontcolor='#000000'>Preço da ação dividido pelo capital de giro por ação. Capital de Giro é o Ativo Circulante menos Passivo Circulante.</run>
+                <run>Æ&#10;&#10;</run>
+                <run bold='true' fontcolor='#555555'>Preço atual / (Ativo circulante - Passivo circulante)</run>
               </formatted-text>
             </customized-tooltip>
             <customized-label>
@@ -3707,7 +3889,7 @@
       </table>
       <simple-id uuid='{E1938423-4701-4EDF-AD27-51FD05000F70}' />
     </worksheet>
-    <worksheet name='P / EBITD'>
+    <worksheet name='P / EBIT'>
       <layout-options>
         <title>
           <formatted-text>
@@ -3723,9 +3905,14 @@
             <datasource caption='accounts+' name='federated.1w3zz3z15zuvat123bhm30hjznqq' />
           </datasources>
           <datasource-dependencies datasource='federated.1w3zz3z15zuvat123bhm30hjznqq'>
+            <column datatype='string' name='[company]' role='dimension' type='nominal' />
+            <column-instance column='[company]' derivation='None' name='[none:company:nk]' pivot='key' type='nominal' />
             <column datatype='real' name='[pebit]' role='measure' type='quantitative' />
             <column-instance column='[pebit]' derivation='Sum' name='[sum:pebit:qk]' pivot='key' type='quantitative' />
           </datasource-dependencies>
+          <slices>
+            <column>[federated.1w3zz3z15zuvat123bhm30hjznqq].[none:company:nk]</column>
+          </slices>
           <aggregation value='true' />
         </view>
         <style>
@@ -3815,9 +4002,9 @@
             </encodings>
             <customized-tooltip>
               <formatted-text>
-                <run fontcolor='#000000'>P / EBIT:</run>
-                <run>Æ&#10;</run>
-                <run fontcolor='#000000'><![CDATA[<[federated.1w3zz3z15zuvat123bhm30hjznqq].[sum:pebit:qk]>]]></run>
+                <run bold='true' fontcolor='#000000'>Indica qual é o preço da ação em relação ao seu resultado EBIT. O EBIT pode ser considerado uma aproximação do lucro operacional da companhia.</run>
+                <run>Æ&#10;&#10;</run>
+                <run bold='true' fontcolor='#555555'>Preço atual / EBIT</run>
               </formatted-text>
             </customized-tooltip>
             <customized-label>
@@ -3866,9 +4053,14 @@
             <datasource caption='accounts+' name='federated.1w3zz3z15zuvat123bhm30hjznqq' />
           </datasources>
           <datasource-dependencies datasource='federated.1w3zz3z15zuvat123bhm30hjznqq'>
+            <column datatype='string' name='[company]' role='dimension' type='nominal' />
+            <column-instance column='[company]' derivation='None' name='[none:company:nk]' pivot='key' type='nominal' />
             <column datatype='real' name='[pebitda]' role='measure' type='quantitative' />
             <column-instance column='[pebitda]' derivation='Sum' name='[sum:pebitda:qk]' pivot='key' type='quantitative' />
           </datasource-dependencies>
+          <slices>
+            <column>[federated.1w3zz3z15zuvat123bhm30hjznqq].[none:company:nk]</column>
+          </slices>
           <aggregation value='true' />
         </view>
         <style>
@@ -3958,9 +4150,9 @@
             </encodings>
             <customized-tooltip>
               <formatted-text>
-                <run fontcolor='#000000'>P / EBITDA:</run>
-                <run>Æ&#10;</run>
-                <run fontcolor='#000000'><![CDATA[<[federated.1w3zz3z15zuvat123bhm30hjznqq].[sum:pebitda:qk]>]]></run>
+                <run bold='true' fontcolor='#000000'>O EBITDA permite conhecer quanto a companhia está gerando de caixa com base exclusivamente em suas atividades operacionais, desconsiderando os impactos financeiros e dos impostos.</run>
+                <run>Æ&#10;&#10;</run>
+                <run bold='true' fontcolor='#555555'>Preço atual / EBITDA</run>
               </formatted-text>
             </customized-tooltip>
             <customized-label>
@@ -4009,9 +4201,18 @@
             <datasource caption='accounts+' name='federated.1w3zz3z15zuvat123bhm30hjznqq' />
           </datasources>
           <datasource-dependencies datasource='federated.1w3zz3z15zuvat123bhm30hjznqq'>
+            <column datatype='string' name='[company]' role='dimension' type='nominal' />
+            <column-instance column='[company]' derivation='None' name='[none:company:nk]' pivot='key' type='nominal' />
+            <column-instance column='[pl (cópia)_976718192709951491]' derivation='None' name='[none:pl (cópia)_976718192709951491:nk]' pivot='key' type='nominal' />
+            <column caption='color-pl' datatype='string' name='[pl (cópia)_976718192709951491]' role='dimension' type='nominal'>
+              <calculation class='tableau' formula='IF [pl] &gt;= 0 THEN &apos;green&apos; ELSE &apos;red&apos; END' />
+            </column>
             <column datatype='real' name='[pl]' role='measure' type='quantitative' />
             <column-instance column='[pl]' derivation='Sum' name='[sum:pl:qk]' pivot='key' type='quantitative' />
           </datasource-dependencies>
+          <slices>
+            <column>[federated.1w3zz3z15zuvat123bhm30hjznqq].[none:company:nk]</column>
+          </slices>
           <aggregation value='true' />
         </view>
         <style>
@@ -4097,15 +4298,15 @@
             <mark class='Text' />
             <mark-sizing mark-sizing-setting='marks-scaling-off' />
             <encodings>
-              <color column='[federated.1w3zz3z15zuvat123bhm30hjznqq].[sum:pl:qk]' />
+              <color column='[federated.1w3zz3z15zuvat123bhm30hjznqq].[none:pl (cópia)_976718192709951491:nk]' />
               <lod column='[federated.1w3zz3z15zuvat123bhm30hjznqq].[sum:pl:qk]' />
               <text column='[federated.1w3zz3z15zuvat123bhm30hjznqq].[sum:pl:qk]' />
             </encodings>
             <customized-tooltip>
               <formatted-text>
-                <run fontcolor='#000000'>P / L:</run>
-                <run>Æ&#10;</run>
-                <run fontcolor='#000000'><![CDATA[<[federated.1w3zz3z15zuvat123bhm30hjznqq].[sum:pl:qk]>]]></run>
+                <run bold='true' fontcolor='#000000'>Dá uma ideia do quanto o mercado está disposto a pagar pelos lucros da empresa.</run>
+                <run>Æ&#10;&#10;</run>
+                <run bold='true' fontcolor='#555555'>Preço atual / Lucro por ação (LPA)</run>
               </formatted-text>
             </customized-tooltip>
             <customized-label>
@@ -4139,27 +4340,6 @@
         </panes>
         <rows>[federated.1w3zz3z15zuvat123bhm30hjznqq].[sum:pl:qk]</rows>
         <cols />
-        <mark-labels>
-          <mark-label id='0'>
-            <tuple-reference>
-              <tuple-descriptor>
-                <pane-descriptor>
-                  <x-fields />
-                  <y-fields>
-                    <field>[federated.1w3zz3z15zuvat123bhm30hjznqq].[sum:pl:qk]</field>
-                  </y-fields>
-                </pane-descriptor>
-                <columns>
-                  <field>[federated.1w3zz3z15zuvat123bhm30hjznqq].[sum:pl:qk]</field>
-                </columns>
-              </tuple-descriptor>
-              <tuple>
-                <value>43.169998168945313</value>
-              </tuple>
-            </tuple-reference>
-            <label-position x='0.498652' y='0.404847' />
-          </mark-label>
-        </mark-labels>
       </table>
       <simple-id uuid='{B4EFFF7D-9370-4CBA-9536-3CB23CA30B7E}' />
     </worksheet>
@@ -4179,9 +4359,14 @@
             <datasource caption='accounts+' name='federated.1w3zz3z15zuvat123bhm30hjznqq' />
           </datasources>
           <datasource-dependencies datasource='federated.1w3zz3z15zuvat123bhm30hjznqq'>
+            <column datatype='string' name='[company]' role='dimension' type='nominal' />
+            <column-instance column='[company]' derivation='None' name='[none:company:nk]' pivot='key' type='nominal' />
             <column datatype='real' name='[psr]' role='measure' type='quantitative' />
             <column-instance column='[psr]' derivation='Sum' name='[sum:psr:qk]' pivot='key' type='quantitative' />
           </datasource-dependencies>
+          <slices>
+            <column>[federated.1w3zz3z15zuvat123bhm30hjznqq].[none:company:nk]</column>
+          </slices>
           <aggregation value='true' />
         </view>
         <style>
@@ -4254,10 +4439,9 @@
             </encodings>
             <customized-tooltip>
               <formatted-text>
-                <run fontcolor='#000000'>P / SR:</run>
-                <run>Æ&#10;</run>
-                <run fontcolor='#000000'><![CDATA[<[federated.1w3zz3z15zuvat123bhm30hjznqq].[sum:psr:qk]>]]></run>
-                <run>Æ&#10;</run>
+                <run bold='true' fontcolor='#000000'>Valor de mercado da empresa dividido pela receita operacional líquida ou preço da ação dividido pela receita líquida por ação</run>
+                <run>Æ&#10;&#10;</run>
+                <run bold='true' fontcolor='#555555'>Preço atual / Receita líquida por ação</run>
               </formatted-text>
             </customized-tooltip>
             <customized-label>
@@ -4307,9 +4491,14 @@
             <datasource caption='accounts+' name='federated.1w3zz3z15zuvat123bhm30hjznqq' />
           </datasources>
           <datasource-dependencies datasource='federated.1w3zz3z15zuvat123bhm30hjznqq'>
+            <column datatype='string' name='[company]' role='dimension' type='nominal' />
+            <column-instance column='[company]' derivation='None' name='[none:company:nk]' pivot='key' type='nominal' />
             <column datatype='real' name='[pvp]' role='measure' type='quantitative' />
             <column-instance column='[pvp]' derivation='Sum' name='[sum:pvp:qk]' pivot='key' type='quantitative' />
           </datasource-dependencies>
+          <slices>
+            <column>[federated.1w3zz3z15zuvat123bhm30hjznqq].[none:company:nk]</column>
+          </slices>
           <aggregation value='true' />
         </view>
         <style>
@@ -4400,9 +4589,9 @@
             </encodings>
             <customized-tooltip>
               <formatted-text>
-                <run fontcolor='#000000'>P / VP:</run>
-                <run>Æ&#10;</run>
-                <run fontcolor='#000000'><![CDATA[<[federated.1w3zz3z15zuvat123bhm30hjznqq].[sum:pvp:qk]>]]></run>
+                <run bold='true' fontcolor='#000000'>Facilita a análise e comparação da relação do preço de negociação de um ativo com seu VPA.</run>
+                <run>Æ&#10;&#10;</run>
+                <run bold='true' fontcolor='#555555'>Preço atual / Valor patrimonial por ação (VPA)</run>
               </formatted-text>
             </customized-tooltip>
             <customized-label>
@@ -4476,9 +4665,14 @@
             <datasource caption='accounts+' name='federated.1w3zz3z15zuvat123bhm30hjznqq' />
           </datasources>
           <datasource-dependencies datasource='federated.1w3zz3z15zuvat123bhm30hjznqq'>
+            <column datatype='string' name='[company]' role='dimension' type='nominal' />
+            <column-instance column='[company]' derivation='None' name='[none:company:nk]' pivot='key' type='nominal' />
             <column datatype='real' name='[passivosativos]' role='measure' type='quantitative' />
             <column-instance column='[passivosativos]' derivation='Sum' name='[sum:passivosativos:qk]' pivot='key' type='quantitative' />
           </datasource-dependencies>
+          <slices>
+            <column>[federated.1w3zz3z15zuvat123bhm30hjznqq].[none:company:nk]</column>
+          </slices>
           <aggregation value='true' />
         </view>
         <style>
@@ -4555,11 +4749,9 @@
             </encodings>
             <customized-tooltip>
               <formatted-text>
-                <run fontcolor='#000000'>PL /</run>
-                <run>Æ&#10;</run>
-                <run fontcolor='#000000'>ATIVOS</run>
-                <run>Æ&#10;</run>
-                <run fontcolor='#000000'><![CDATA[<[federated.1w3zz3z15zuvat123bhm30hjznqq].[sum:passivosativos:qk]>]]></run>
+                <run bold='true' fontcolor='#000000'>Calculo para saber a relação entre os ativos (circulantes e não circulantes) e os passivos de uma empresa.</run>
+                <run>Æ&#10;&#10;</run>
+                <run bold='true' fontcolor='#555555'>Passivos / Ativos</run>
               </formatted-text>
             </customized-tooltip>
             <customized-label>
@@ -4608,9 +4800,14 @@
             <datasource caption='accounts+' name='federated.1w3zz3z15zuvat123bhm30hjznqq' />
           </datasources>
           <datasource-dependencies datasource='federated.1w3zz3z15zuvat123bhm30hjznqq'>
+            <column datatype='string' name='[company]' role='dimension' type='nominal' />
+            <column-instance column='[company]' derivation='None' name='[none:company:nk]' pivot='key' type='nominal' />
             <column datatype='real' name='[plativos]' role='measure' type='quantitative' />
             <column-instance column='[plativos]' derivation='Sum' name='[sum:plativos:qk]' pivot='key' type='quantitative' />
           </datasource-dependencies>
+          <slices>
+            <column>[federated.1w3zz3z15zuvat123bhm30hjznqq].[none:company:nk]</column>
+          </slices>
           <aggregation value='true' />
         </view>
         <style>
@@ -4687,11 +4884,9 @@
             </encodings>
             <customized-tooltip>
               <formatted-text>
-                <run fontcolor='#000000'>PL /</run>
-                <run>Æ&#10;</run>
-                <run fontcolor='#000000'>ATIVOS</run>
-                <run>Æ&#10;</run>
-                <run fontcolor='#000000'><![CDATA[<[federated.1w3zz3z15zuvat123bhm30hjznqq].[sum:plativos:qk]>]]></run>
+                <run bold='true' fontcolor='#000000'>O Patrimônio de uma empresa é o resultado da subtração dos ativos com os passivos. Este indicador é para mostrar a relação dos ativos no patrimônio da empresa.</run>
+                <run>Æ&#10;&#10;</run>
+                <run bold='true' fontcolor='#555555'>Patrimônio líquido / Ativos</run>
               </formatted-text>
             </customized-tooltip>
             <customized-label>
@@ -4740,12 +4935,22 @@
             <datasource caption='accounts+' name='federated.1w3zz3z15zuvat123bhm30hjznqq' />
           </datasources>
           <datasource-dependencies datasource='federated.1w3zz3z15zuvat123bhm30hjznqq'>
+            <column datatype='string' name='[company]' role='dimension' type='nominal' />
+            <column-instance column='[company]' derivation='None' name='[none:company:nk]' pivot='key' type='nominal' />
             <column datatype='real' name='[roa]' role='measure' type='quantitative' />
             <column-instance column='[roa]' derivation='Sum' name='[sum:roa:qk]' pivot='key' type='quantitative' />
           </datasource-dependencies>
+          <slices>
+            <column>[federated.1w3zz3z15zuvat123bhm30hjznqq].[none:company:nk]</column>
+          </slices>
           <aggregation value='true' />
         </view>
         <style>
+          <style-rule element='axis'>
+            <format attr='stroke-size' scope='cols' value='0' />
+            <format attr='line-visibility' scope='cols' value='off' />
+            <format attr='tick-color' scope='cols' value='#00000000' />
+          </style-rule>
           <style-rule element='cell'>
             <format attr='text-orientation' value='0' />
             <format attr='wrap' value='auto' />
@@ -4794,9 +4999,21 @@
             <format attr='font-size' value='28' />
             <format attr='font-family' value='Arial' />
           </style-rule>
+          <style-rule element='dropline'>
+            <format attr='stroke-size' scope='cols' value='0' />
+            <format attr='line-visibility' scope='cols' value='off' />
+          </style-rule>
+          <style-rule element='refline'>
+            <format attr='stroke-size' scope='cols' value='0' />
+            <format attr='line-visibility' scope='cols' value='off' />
+          </style-rule>
           <style-rule element='gridline'>
             <format attr='stroke-size' scope='rows' value='0' />
             <format attr='line-visibility' scope='rows' value='off' />
+          </style-rule>
+          <style-rule element='zeroline'>
+            <format attr='stroke-size' scope='cols' value='0' />
+            <format attr='line-visibility' scope='cols' value='off' />
           </style-rule>
           <style-rule element='title'>
             <format attr='font-family' value='Arial' />
@@ -4819,9 +5036,9 @@
             </encodings>
             <customized-tooltip>
               <formatted-text>
-                <run fontcolor='#000000'>ROE</run>
-                <run>Æ&#10;</run>
-                <run fontcolor='#000000'><![CDATA[<[federated.1w3zz3z15zuvat123bhm30hjznqq].[sum:roa:qk]>]]></run>
+                <run bold='true' fontcolor='#000000'>O retorno sobre os ativos ou Return on Assets, é um indicador de rentabilidade, que calcula a capacidade de uma empresa gerar lucro a partir dos seus ativos, além de indiretamente, indicar a eficiência dos seus gestores.</run>
+                <run>Æ&#10;&#10;</run>
+                <run bold='true' fontcolor='#555555' fontsize='9'>Lucro líquido / Ativo total</run>
               </formatted-text>
             </customized-tooltip>
             <customized-label>
@@ -4870,12 +5087,22 @@
             <datasource caption='accounts+' name='federated.1w3zz3z15zuvat123bhm30hjznqq' />
           </datasources>
           <datasource-dependencies datasource='federated.1w3zz3z15zuvat123bhm30hjznqq'>
+            <column datatype='string' name='[company]' role='dimension' type='nominal' />
+            <column-instance column='[company]' derivation='None' name='[none:company:nk]' pivot='key' type='nominal' />
             <column datatype='real' name='[roe]' role='measure' type='quantitative' />
             <column-instance column='[roe]' derivation='Sum' name='[sum:roe:qk]' pivot='key' type='quantitative' />
           </datasource-dependencies>
+          <slices>
+            <column>[federated.1w3zz3z15zuvat123bhm30hjznqq].[none:company:nk]</column>
+          </slices>
           <aggregation value='true' />
         </view>
         <style>
+          <style-rule element='axis'>
+            <format attr='stroke-size' scope='cols' value='0' />
+            <format attr='line-visibility' scope='cols' value='off' />
+            <format attr='tick-color' scope='cols' value='#00000000' />
+          </style-rule>
           <style-rule element='cell'>
             <format attr='text-orientation' value='0' />
             <format attr='wrap' value='auto' />
@@ -4924,9 +5151,21 @@
             <format attr='font-size' value='28' />
             <format attr='font-family' value='Arial' />
           </style-rule>
+          <style-rule element='dropline'>
+            <format attr='stroke-size' scope='cols' value='0' />
+            <format attr='line-visibility' scope='cols' value='off' />
+          </style-rule>
+          <style-rule element='refline'>
+            <format attr='stroke-size' scope='cols' value='0' />
+            <format attr='line-visibility' scope='cols' value='off' />
+          </style-rule>
           <style-rule element='gridline'>
             <format attr='stroke-size' scope='rows' value='0' />
             <format attr='line-visibility' scope='rows' value='off' />
+          </style-rule>
+          <style-rule element='zeroline'>
+            <format attr='stroke-size' scope='cols' value='0' />
+            <format attr='line-visibility' scope='cols' value='off' />
           </style-rule>
           <style-rule element='title'>
             <format attr='font-family' value='Arial' />
@@ -4949,9 +5188,9 @@
             </encodings>
             <customized-tooltip>
               <formatted-text>
-                <run fontcolor='#000000'>ROE</run>
-                <run>Æ&#10;</run>
-                <run fontcolor='#000000'><![CDATA[<[federated.1w3zz3z15zuvat123bhm30hjznqq].[sum:roe:qk]>]]></run>
+                <run bold='true' fontcolor='#000000'>Mede a capacidade de agregar valor de uma empresa a partir de seus próprios recursos e do dinheiro de investidores.</run>
+                <run>Æ&#10;&#10;</run>
+                <run bold='true' fontcolor='#555555'>Lucro líquido / Patrimônio líquido</run>
               </formatted-text>
             </customized-tooltip>
             <customized-label>
@@ -5000,9 +5239,14 @@
             <datasource caption='accounts+' name='federated.1w3zz3z15zuvat123bhm30hjznqq' />
           </datasources>
           <datasource-dependencies datasource='federated.1w3zz3z15zuvat123bhm30hjznqq'>
+            <column datatype='string' name='[company]' role='dimension' type='nominal' />
+            <column-instance column='[company]' derivation='None' name='[none:company:nk]' pivot='key' type='nominal' />
             <column datatype='real' name='[roic]' role='measure' type='quantitative' />
             <column-instance column='[roic]' derivation='Sum' name='[sum:roic:qk]' pivot='key' type='quantitative' />
           </datasource-dependencies>
+          <slices>
+            <column>[federated.1w3zz3z15zuvat123bhm30hjznqq].[none:company:nk]</column>
+          </slices>
           <aggregation value='true' />
         </view>
         <style>
@@ -5098,9 +5342,11 @@
             </encodings>
             <customized-tooltip>
               <formatted-text>
-                <run fontcolor='#000000'>ROE</run>
+                <run bold='true' fontcolor='#000000'>Mede a rentabilidade de dinheiro o que uma empresa é capaz de gerar em razão de todo o capital investido, incluindo os aportes por meio de dívidas.</run>
+                <run>Æ&#10;&#10;</run>
+                <run bold='true' fontcolor='#555555' fontsize='9'>(EBIT - Impostos) / (Patrimônio líquido + Endividamento)</run>
                 <run>Æ&#10;</run>
-                <run fontcolor='#000000'><![CDATA[<[federated.1w3zz3z15zuvat123bhm30hjznqq].[sum:roic:qk]>]]></run>
+                <run fontcolor='#000000' fontsize='9'>Æ&#10;</run>
               </formatted-text>
             </customized-tooltip>
             <customized-label>
@@ -5153,9 +5399,14 @@
             <datasource caption='accounts+' name='federated.1w3zz3z15zuvat123bhm30hjznqq' />
           </datasources>
           <datasource-dependencies datasource='federated.1w3zz3z15zuvat123bhm30hjznqq'>
+            <column datatype='string' name='[company]' role='dimension' type='nominal' />
+            <column-instance column='[company]' derivation='None' name='[none:company:nk]' pivot='key' type='nominal' />
             <column-instance column='[vpa]' derivation='Sum' name='[sum:vpa:qk]' pivot='key' type='quantitative' />
             <column datatype='real' name='[vpa]' role='measure' type='quantitative' />
           </datasource-dependencies>
+          <slices>
+            <column>[federated.1w3zz3z15zuvat123bhm30hjznqq].[none:company:nk]</column>
+          </slices>
           <aggregation value='true' />
         </view>
         <style>
@@ -5173,7 +5424,7 @@
             <format attr='text-orientation' data-class='subtotal' value='0' />
             <format attr='text-orientation' field='[federated.1w3zz3z15zuvat123bhm30hjznqq].[sum:vpa:qk]' value='0' />
             <format attr='vertical-align' field='[federated.1w3zz3z15zuvat123bhm30hjznqq].[sum:vpa:qk]' value='center' />
-            <format attr='text-format' field='[federated.1w3zz3z15zuvat123bhm30hjznqq].[sum:vpa:qk]' value='n#,##0.00;-#,##0.00' />
+            <format attr='text-format' field='[federated.1w3zz3z15zuvat123bhm30hjznqq].[sum:vpa:qk]' value='C1046%' />
           </style-rule>
           <style-rule element='header'>
             <format attr='background-color' field='[federated.1w3zz3z15zuvat123bhm30hjznqq].[sum:vpa:qk]' value='#000000' />
@@ -5245,9 +5496,9 @@
             </encodings>
             <customized-tooltip>
               <formatted-text>
-                <run fontcolor='#000000'>VPA:</run>
-                <run>Æ&#10;</run>
-                <run fontcolor='#000000'><![CDATA[<[federated.1w3zz3z15zuvat123bhm30hjznqq].[sum:vpa:qk]>]]></run>
+                <run bold='true' fontcolor='#000000'>Indica qual o valor patrimonial de uma ação.</run>
+                <run>Æ&#10;&#10;</run>
+                <run bold='true' fontcolor='#555555'>Patrimônio líquido / Nº de ações</run>
               </formatted-text>
             </customized-tooltip>
             <customized-label>
@@ -5305,7 +5556,7 @@
     </worksheet>
   </worksheets>
   <dashboards>
-    <dashboard name='Painel 1'>
+    <dashboard name='Dashboard'>
       <style>
         <style-rule element='parameter-ctrl'>
           <format attr='font-family' value='Arial' />
@@ -5371,7 +5622,7 @@
                   <format attr='margin' value='4' />
                 </zone-style>
               </zone>
-              <zone h='13500' id='17' name='Empresas' show-title='false' w='55000' x='488' y='8300'>
+              <zone h='10700' id='17' name='Filtro Empresas' show-title='false' w='46890' x='488' y='11100'>
                 <zone-style>
                   <format attr='border-color' value='#000000' />
                   <format attr='border-style' value='none' />
@@ -5427,7 +5678,7 @@
                   <format attr='margin' value='4' />
                 </zone-style>
               </zone>
-              <zone h='8100' id='80' name='P / EBITD' w='8781' x='64268' y='13700'>
+              <zone h='8100' id='80' name='P / EBIT' w='8781' x='64268' y='13700'>
                 <zone-style>
                   <format attr='border-color' value='#000000' />
                   <format attr='border-style' value='none' />
@@ -5573,7 +5824,7 @@
                 </zone>
                 <zone h='34300' id='115' is-fixed='true' type-v2='layout-basic' w='22787' x='76725' y='64900'>
                   <zone h='7400' id='111' param='vert' type-v2='layout-flow' w='22787' x='76725' y='64900'>
-                    <zone h='7400' id='114' name='ROIC' w='22787' x='76725' y='64900'>
+                    <zone fixed-size='492' h='7400' id='114' is-fixed='true' name='ROIC' w='22787' x='76725' y='64900'>
                       <layout-cache minheight='129' type-h='scalable' type-w='fixed' />
                       <zone-style>
                         <format attr='border-color' value='#000000' />
@@ -5671,7 +5922,15 @@
                   <format attr='margin' value='4' />
                 </zone-style>
               </zone>
-              <zone h='7500' id='175' mode='dropdown' name='Empresas' param='[federated.1w3zz3z15zuvat123bhm30hjznqq].[none:company:nk]' show-all='false' type-v2='filter' values='database' w='55000' x='488' y='800'>
+              <zone h='10300' id='175' mode='dropdown' name='Filtro Empresas' param='[federated.1w3zz3z15zuvat123bhm30hjznqq].[none:company:nk]' show-all='false' type-v2='filter' values='all' w='55000' x='488' y='800'>
+                <zone-style>
+                  <format attr='border-color' value='#000000' />
+                  <format attr='border-style' value='none' />
+                  <format attr='border-width' value='0' />
+                  <format attr='margin' value='4' />
+                </zone-style>
+              </zone>
+              <zone h='10700' id='190' type-v2='empty' w='8110' x='47378' y='11100'>
                 <zone-style>
                   <format attr='border-color' value='#000000' />
                   <format attr='border-style' value='none' />
@@ -5696,20 +5955,11 @@
       </zones>
       <devicelayouts>
         <devicelayout auto-generated='true' name='Phone'>
-          <size maxheight='2950' minheight='2950' sizing-mode='vscroll' />
+          <size maxheight='2900' minheight='2900' sizing-mode='vscroll' />
           <zones>
-            <zone h='100000' id='174' type-v2='layout-basic' w='100000' x='0' y='0'>
-              <zone h='98400' id='173' param='vert' type-v2='layout-flow' w='99024' x='488' y='800'>
-                <zone fixed-size='202' h='21000' id='17' is-fixed='true' name='Empresas' show-title='false' w='54817' x='488' y='800'>
-                  <zone-style>
-                    <format attr='border-color' value='#000000' />
-                    <format attr='border-style' value='none' />
-                    <format attr='border-width' value='0' />
-                    <format attr='margin' value='4' />
-                    <format attr='padding' value='0' />
-                  </zone-style>
-                </zone>
-                <zone forceUpdate='true' h='4600' id='6' type-v2='text' w='44207' x='55305' y='800'>
+            <zone h='100000' id='216' type-v2='layout-basic' w='100000' x='0' y='0'>
+              <zone h='98400' id='215' param='vert' type-v2='layout-flow' w='99024' x='488' y='800'>
+                <zone forceUpdate='true' h='4600' id='6' type-v2='text' w='44024' x='55488' y='800'>
                   <formatted-text>
                     <run bold='true' fontalignment='1' fontcolor='#000000' fontname='Arial' fontsize='16'>INDICADORES DE VALUATION</run>
                   </formatted-text>
@@ -5721,7 +5971,7 @@
                     <format attr='padding' value='0' />
                   </zone-style>
                 </zone>
-                <zone fixed-size='75' h='8300' id='155' is-fixed='true' name='D.Y' w='8963' x='55305' y='5400'>
+                <zone fixed-size='75' h='8300' id='155' is-fixed='true' name='D.Y' w='8780' x='55488' y='5400'>
                   <zone-style>
                     <format attr='border-color' value='#000000' />
                     <format attr='border-style' value='none' />
@@ -5766,6 +6016,24 @@
                     <format attr='padding' value='0' />
                   </zone-style>
                 </zone>
+                <zone h='10300' id='175' mode='dropdown' name='Filtro Empresas' param='[federated.1w3zz3z15zuvat123bhm30hjznqq].[none:company:nk]' type-v2='filter' values='all' w='55000' x='488' y='800'>
+                  <zone-style>
+                    <format attr='border-color' value='#000000' />
+                    <format attr='border-style' value='none' />
+                    <format attr='border-width' value='0' />
+                    <format attr='margin' value='4' />
+                    <format attr='padding' value='0' />
+                  </zone-style>
+                </zone>
+                <zone fixed-size='99' h='10700' id='17' is-fixed='true' name='Filtro Empresas' show-title='false' w='46890' x='488' y='11100'>
+                  <zone-style>
+                    <format attr='border-color' value='#000000' />
+                    <format attr='border-style' value='none' />
+                    <format attr='border-width' value='0' />
+                    <format attr='margin' value='4' />
+                    <format attr='padding' value='0' />
+                  </zone-style>
+                </zone>
                 <zone custom-title='true' h='8300' id='70' mode='list' param='[Parameters].[Parâmetro 1]' show-title='false' type-v2='paramctrl' w='6341' x='47744' y='12600'>
                   <formatted-text>
                     <run>sdas&#10;</run>
@@ -5778,7 +6046,7 @@
                     <format attr='padding' value='0' />
                   </zone-style>
                 </zone>
-                <zone fixed-size='73' h='8100' id='79' is-fixed='true' name='P / EBITDA' w='8963' x='55305' y='13700'>
+                <zone fixed-size='73' h='8100' id='79' is-fixed='true' name='P / EBITDA' w='8780' x='55488' y='13700'>
                   <zone-style>
                     <format attr='border-color' value='#000000' />
                     <format attr='border-style' value='none' />
@@ -5787,7 +6055,7 @@
                     <format attr='padding' value='0' />
                   </zone-style>
                 </zone>
-                <zone fixed-size='73' h='8100' id='80' is-fixed='true' name='P / EBITD' w='8781' x='64268' y='13700'>
+                <zone fixed-size='73' h='8100' id='80' is-fixed='true' name='P / EBIT' w='8781' x='64268' y='13700'>
                   <zone-style>
                     <format attr='border-color' value='#000000' />
                     <format attr='border-style' value='none' />
@@ -5823,7 +6091,7 @@
                     <format attr='padding' value='0' />
                   </zone-style>
                 </zone>
-                <zone fixed-size='280' h='43066' id='65' is-fixed='true' name='Cotas' w='54817' x='488' y='21800'>
+                <zone fixed-size='280' h='43066' id='65' is-fixed='true' name='Cotas' w='55000' x='488' y='21800'>
                   <zone-style>
                     <format attr='border-color' value='#000000' />
                     <format attr='border-style' value='none' />
@@ -5832,7 +6100,7 @@
                     <format attr='padding' value='0' />
                   </zone-style>
                 </zone>
-                <zone fixed-size='80' h='8800' id='84' is-fixed='true' name='P / SR' w='8963' x='55305' y='21800'>
+                <zone fixed-size='80' h='8800' id='84' is-fixed='true' name='P / SR' w='8780' x='55488' y='21800'>
                   <zone-style>
                     <format attr='border-color' value='#000000' />
                     <format attr='border-style' value='none' />
@@ -5859,7 +6127,7 @@
                     <format attr='padding' value='0' />
                   </zone-style>
                 </zone>
-                <zone forceUpdate='true' h='5400' id='89' type-v2='text' w='44207' x='55305' y='30600'>
+                <zone forceUpdate='true' h='5400' id='89' type-v2='text' w='44024' x='55488' y='30600'>
                   <formatted-text>
                     <run bold='true' fontalignment='1' fontcolor='#000000' fontname='Arial' fontsize='16'>INDICADORES DE ENDIVIDAMENTO</run>
                   </formatted-text>
@@ -5871,7 +6139,7 @@
                     <format attr='padding' value='0' />
                   </zone-style>
                 </zone>
-                <zone fixed-size='79' h='8700' id='91' is-fixed='true' name='DÍV. LÍQUIDA / PL' w='8902' x='55305' y='36000'>
+                <zone fixed-size='79' h='8700' id='91' is-fixed='true' name='DÍV. LÍQUIDA / PL' w='8719' x='55488' y='36000'>
                   <zone-style>
                     <format attr='border-color' value='#000000' />
                     <format attr='border-style' value='none' />
@@ -5916,7 +6184,7 @@
                     <format attr='padding' value='0' />
                   </zone-style>
                 </zone>
-                <zone fixed-size='70' h='7800' id='96' is-fixed='true' name='LÍQ. CORRENTE' w='8902' x='55305' y='44700'>
+                <zone fixed-size='70' h='7800' id='96' is-fixed='true' name='LÍQ. CORRENTE' w='8719' x='55488' y='44700'>
                   <zone-style>
                     <format attr='border-color' value='#000000' />
                     <format attr='border-style' value='none' />
@@ -5925,7 +6193,7 @@
                     <format attr='padding' value='0' />
                   </zone-style>
                 </zone>
-                <zone forceUpdate='true' h='5500' id='97' type-v2='text' w='21420' x='55305' y='52500'>
+                <zone forceUpdate='true' h='5500' id='97' type-v2='text' w='21237' x='55488' y='52500'>
                   <formatted-text>
                     <run bold='true' fontalignment='1' fontcolor='#000000' fontname='Arial' fontsize='16'>INDICADORES DE EFICIÊNCIA</run>
                   </formatted-text>
@@ -5949,7 +6217,7 @@
                     <format attr='padding' value='0' />
                   </zone-style>
                 </zone>
-                <zone fixed-size='61' h='6900' id='101' is-fixed='true' name='M. BRUTA' w='10671' x='55305' y='58000'>
+                <zone fixed-size='61' h='6900' id='101' is-fixed='true' name='M. BRUTA' w='10488' x='55488' y='58000'>
                   <zone-style>
                     <format attr='border-color' value='#000000' />
                     <format attr='border-style' value='none' />
@@ -5987,7 +6255,7 @@
                     <format attr='padding' value='0' />
                   </zone-style>
                 </zone>
-                <zone fixed-size='60' h='7400' id='105' is-fixed='true' name='M. EBIT' w='10671' x='55305' y='64900'>
+                <zone fixed-size='60' h='7400' id='105' is-fixed='true' name='M. EBIT' w='10488' x='55488' y='64900'>
                   <zone-style>
                     <format attr='border-color' value='#000000' />
                     <format attr='border-style' value='none' />
@@ -6046,6 +6314,11 @@
             <card type='rows' />
           </strip>
         </edge>
+        <edge name='right'>
+          <strip size='170'>
+            <card pane-specification-id='0' param='[federated.1w3zz3z15zuvat123bhm30hjznqq].[none:pl (cópia)_976718192709951491:nk]' type='color' />
+          </strip>
+        </edge>
       </cards>
       <viewpoint>
         <zoom type='entire-view' />
@@ -6054,7 +6327,7 @@
       </viewpoint>
       <simple-id uuid='{4968AC3A-ED2B-439F-A232-0F2C0F18CB4A}' />
     </window>
-    <window class='worksheet' name='D.Y'>
+    <window class='worksheet' maximized='true' name='D.Y'>
       <cards>
         <edge name='left'>
           <strip size='281'>
@@ -6129,7 +6402,7 @@
     <window class='worksheet' name='EV / EBITDA'>
       <cards>
         <edge name='left'>
-          <strip size='281'>
+          <strip size='286'>
             <card type='filters' />
             <card type='marks' />
           </strip>
@@ -6140,6 +6413,12 @@
           </strip>
           <strip size='2147483647'>
             <card type='rows' />
+          </strip>
+        </edge>
+        <edge name='right'>
+          <strip size='170'>
+            <card param='[federated.1w3zz3z15zuvat123bhm30hjznqq].[:Measure Names]' show-morefewerbutton='false' type='filter' />
+            <card pane-specification-id='0' param='[federated.1w3zz3z15zuvat123bhm30hjznqq].[none:evebitda (cópia)_976718192709591042:nk]' type='color' />
           </strip>
         </edge>
       </cards>
@@ -6174,7 +6453,7 @@
       </viewpoint>
       <simple-id uuid='{BEDF69E6-EFCF-42F1-B9D2-0A2DB5E66FB7}' />
     </window>
-    <window class='worksheet' name='P / EBITD'>
+    <window class='worksheet' name='P / EBIT'>
       <cards>
         <edge name='left'>
           <strip size='281'>
@@ -6657,7 +6936,7 @@
       </viewpoint>
       <simple-id uuid='{89875348-DE84-443D-BE25-8D23416E6308}' />
     </window>
-    <window class='worksheet' name='Empresas'>
+    <window class='worksheet' name='Filtro Empresas'>
       <cards>
         <edge name='left'>
           <strip size='160'>
@@ -6676,7 +6955,7 @@
         </edge>
         <edge name='right'>
           <strip size='170'>
-            <card mode='dropdown' param='[federated.1w3zz3z15zuvat123bhm30hjznqq].[none:company:nk]' type='filter' />
+            <card mode='dropdown' param='[federated.1w3zz3z15zuvat123bhm30hjznqq].[none:company:nk]' show-all='false' type='filter' />
           </strip>
         </edge>
       </cards>
@@ -6713,7 +6992,7 @@
       </viewpoint>
       <simple-id uuid='{90D2063E-D3D7-402B-8E91-C51438835800}' />
     </window>
-    <window class='dashboard' maximized='true' name='Painel 1'>
+    <window class='dashboard' name='Dashboard'>
       <viewpoints>
         <viewpoint name='Cotas'>
           <zoom type='entire-view' />
@@ -6742,7 +7021,7 @@
           <zoom type='entire-view' />
           <floating-toolbar-visibility value='2' />
         </viewpoint>
-        <viewpoint name='Empresas'>
+        <viewpoint name='Filtro Empresas'>
           <zoom type='entire-view' />
         </viewpoint>
         <viewpoint name='LPA'>
@@ -6781,7 +7060,7 @@
           <zoom type='entire-view' />
           <floating-toolbar-visibility value='2' />
         </viewpoint>
-        <viewpoint name='P / EBITD'>
+        <viewpoint name='P / EBIT'>
           <zoom type='entire-view' />
           <floating-toolbar-visibility value='2' />
         </viewpoint>
@@ -6826,7 +7105,7 @@
           <floating-toolbar-visibility value='2' />
         </viewpoint>
       </viewpoints>
-      <active id='-1' />
+      <active id='63' />
       <simple-id uuid='{FF07A73E-8EB1-45EF-9FFF-A60A7F408AD1}' />
     </window>
   </windows>
