@@ -416,47 +416,55 @@ def get_passivos_ativos(df):
   vl_passivos_ativos = vl_passivos / vl_ativos
   return vl_passivos_ativos
 
+def get_value_from_result(result, key):
+  try:
+    value = result.info[key]
+    if value == None:
+      value = 0
+  except KeyError:
+    value = 0
+
+  return value
 
 def download_remaining_data(df):
   ticker = df.iloc[0].TICKER
   result = yf.Ticker(f'{ticker}.SA')
 
-  try:
-    value = result.info['currentPrice']
-    if value == None:
-      value = 0
-    df['QUOTE_PRICE'] = value
-  except KeyError:
-    df['QUOTE_PRICE'] = 0
-
-  try:
-    df['EV'] = result.info['enterpriseValue']
-  except KeyError:
-    df['EV'] = 0
-
-  try:
-    df['QUOTES_QUANTITY'] = result.info['sharesOutstanding']
-  except KeyError:
-    df['QUOTES_QUANTITY'] = 0
-
-  try:
-    value = result.info['dividendYield']
-    if value == None:
-      value = 0
-    df['DY'] = value
-  except KeyError:
-    df['DY'] = 0
+  df['QUOTE_PRICE'] = get_value_from_result(result, 'currentPrice')
+  df['EV'] = get_value_from_result(result, 'enterpriseValue')
+  df['QUOTES_QUANTITY'] = get_value_from_result(result, 'sharesOutstanding')
+  df['DY'] = get_value_from_result(result, 'dividendYield')
+  df['address'] = get_value_from_result(result, 'address1')
+  df['city'] = get_value_from_result(result, 'city')
+  df['fiftyTwoWeekHigh'] = get_value_from_result(result, 'fiftyTwoWeekHigh')
+  df['fiftyTwoWeekLow'] = get_value_from_result(result, 'fiftyTwoWeekLow')
+  df['zip'] = get_value_from_result(result, 'zip')
+  df['country'] = get_value_from_result(result, 'country')
+  df['state'] = get_value_from_result(result, 'state')
 
   return df
 
-def process_indicators():
+def process_indicators(year):
   print('Start process indicators')
   path = get_processed_path()
+  indicators_path = get_indicators_path()
   df = pd.read_csv(path)
   df.dropna(inplace=True)
-  date = df['DT_REFER'].max()
+
+  itr_dates = [ f'{year}-09-30', f'{year}-06-30', f'{year}-03-31',]
+  
+  for itr_date in itr_dates:
+    df_date = df[df['DT_REFER'] == itr_date]
+    
+    if not df_date.empty:
+      date = df_date['DT_REFER'].unique()[0]
+      break
 
   df_indicators = pd.DataFrame()
+  try:
+    df_indicators = pd.read_csv(indicators_path)
+  except FileNotFoundError:
+    df_indicators = pd.DataFrame()
 
   for cnpj in df['CNPJ_CIA'].unique()[:20]:
     selecao_cnpj = df['CNPJ_CIA'] == cnpj
@@ -475,6 +483,14 @@ def process_indicators():
           'company': companyName,
           'date': date,
           'ticker': ticker,
+          'price': get_quote_value(df_cnpj),
+          'address': df_cnpj['address'].unique()[0],
+          'city': df_cnpj['city'].unique()[0],
+          'fiftyTwoWeekHigh': df_cnpj['fiftyTwoWeekHigh'].unique()[0],
+          'fiftyTwoWeekLow': df_cnpj['fiftyTwoWeekLow'].unique()[0],
+          'zip': df_cnpj['zip'].unique()[0],
+          'country': df_cnpj['country'].unique()[0],
+          'state': df_cnpj['state'].unique()[0],
           'dy': get_dividendo_yield(df_cnpj),
           'pl': get_pl(df_cnpj),
           'pvp': get_pvp(df_cnpj),
@@ -505,7 +521,7 @@ def process_indicators():
       print(f'Empresa {cnpj} carregada')
       df_indicators = df_indicators.append(row, ignore_index=True)
 
-  df_indicators.to_csv(get_indicators_path())
+  df_indicators.to_csv(indicators_path)
 
 if __name__ == "__main__":
   process_indicators()

@@ -90,7 +90,7 @@ def get_accounts(df):
   accounts_df.set_index('CD_CONTA', inplace=True)
   return accounts_df
 
-def process():
+def process(year):
     print('Start process ITRs')
     processed_path = get_processed_path()
     df = load_itr()
@@ -101,7 +101,15 @@ def process():
     print(f'Accouynt data saved in ./data/processed/accounts.csv!')
 
     df_clean = clean_itr(df)
-    df_clean.to_csv(processed_path)
+
+    try:
+        processed_df = pd.read_csv(processed_path)
+        processed_df.append(df_clean, in_place=True)
+    except FileNotFoundError:
+        processed_df = pd.DataFrame()
+        processed_df.append(df_clean)
+    
+    processed_df.to_csv(processed_path, index=False)
     print(f'Clean data saved in {processed_path} !')
 
-    process_indicators()
+    process_indicators(year)

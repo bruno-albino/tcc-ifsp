@@ -68,7 +68,7 @@ def generate_fresh_quotes():
   print('Download fresh quotes finished')
 
 def init():
-  year = datetime.datetime.today().year
+  # year = datetime.datetime.today().year
 
   # Buscar arquivo de cotas, localizado em ./data/processed/quotes.csv
   try:
@@ -78,8 +78,9 @@ def init():
     # Arquivo não existe 
     generate_fresh_quotes()
 
-  download_itrs(f'{year}')
-  process()
+  for year in ['2020', '2021']:
+    download_itrs(year)
+    process(year)
 
 
 if __name__ == "__main__":
