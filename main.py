@@ -6,8 +6,8 @@ from process_indicators import process_indicators
 from pathlib import Path
 from tqdm import tqdm
 
-print('Downloading instrument consolidated file...')
-download_instrument_consolidated()
+# print('Downloading instrument consolidated file...')
+# download_instrument_consolidated()
 
 dir = Path(get_download_path())
 file = [f for f in list(dir.glob('InstrumentsConsolidatedFile*.csv'))][0]
@@ -92,24 +92,18 @@ def get_accounts(df):
 
 def process(year):
     print('Start process ITRs')
-    processed_path = get_processed_path()
+    processed_path = get_processed_path(year)
     df = load_itr()
 
-    print('Downloading account dictionary...')
-    df_accounts = get_accounts(df)
-    df_accounts.to_csv('./data/processed/accounts.csv')
-    print(f'Accouynt data saved in ./data/processed/accounts.csv!')
+    # print('Downloading account dictionary...')
+    # df_accounts = get_accounts(df)
+    # df_accounts.to_csv('./data/processed/accounts.csv')
+    # print(f'Accouynt data saved in ./data/processed/accounts.csv!')
 
     df_clean = clean_itr(df)
-
-    try:
-        processed_df = pd.read_csv(processed_path)
-        processed_df.append(df_clean, in_place=True)
-    except FileNotFoundError:
-        processed_df = pd.DataFrame()
-        processed_df.append(df_clean)
-    
-    processed_df.to_csv(processed_path, index=False)
+    processed_df = pd.DataFrame()
+    processed_df = processed_df.append(df_clean)   
+    processed_df.to_csv(processed_path)
     print(f'Clean data saved in {processed_path} !')
 
     process_indicators(year)

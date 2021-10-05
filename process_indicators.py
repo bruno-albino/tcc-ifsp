@@ -1,4 +1,6 @@
+from teste import get_quotes_df
 from utils import get_indicators_path, get_processed_path, get_quotes_path
+from merge import merge
 import pandas as pd
 import yfinance as yf
 
@@ -430,12 +432,10 @@ def download_remaining_data(df):
   ticker = df.iloc[0].TICKER
   result = yf.Ticker(f'{ticker}.SA')
 
-  df['QUOTE_PRICE'] = get_value_from_result(result, 'currentPrice')
+  # df['QUOTE_PRICE'] = get_value_from_result(result, 'currentPrice')
   df['EV'] = get_value_from_result(result, 'enterpriseValue')
   df['QUOTES_QUANTITY'] = get_value_from_result(result, 'sharesOutstanding')
   df['DY'] = get_value_from_result(result, 'dividendYield')
-  df['address'] = get_value_from_result(result, 'address1')
-  df['city'] = get_value_from_result(result, 'city')
   df['fiftyTwoWeekHigh'] = get_value_from_result(result, 'fiftyTwoWeekHigh')
   df['fiftyTwoWeekLow'] = get_value_from_result(result, 'fiftyTwoWeekLow')
   df['zip'] = get_value_from_result(result, 'zip')
@@ -446,51 +446,58 @@ def download_remaining_data(df):
 
 def process_indicators(year):
   print('Start process indicators')
-  path = get_processed_path()
-  indicators_path = get_indicators_path()
+  path = get_processed_path(year)
+  indicators_path = get_indicators_path(year)
   df = pd.read_csv(path)
   df.dropna(inplace=True)
+  tickers = df['TICKER'].unique()
+  df_quotes = get_quotes_df(tickers)
 
   itr_dates = [ f'{year}-09-30', f'{year}-06-30', f'{year}-03-31',]
   
   for itr_date in itr_dates:
-    df_date = df[df['DT_REFER'] == itr_date]
+    # df_date = df[df['DT_REFER'] == itr_date]
     
-    if not df_date.empty:
-      date = df_date['DT_REFER'].unique()[0]
-      break
+    # if not df_date.empty:
+    #   date = df_date['DT_REFER'].unique()[0]
+    #   break
 
-  df_indicators = pd.DataFrame()
-  try:
-    df_indicators = pd.read_csv(indicators_path)
-  except FileNotFoundError:
     df_indicators = pd.DataFrame()
+    # print(date)
+    
 
-  for cnpj in df['CNPJ_CIA'].unique()[:20]:
-    selecao_cnpj = df['CNPJ_CIA'] == cnpj
-    df_cnpj = df[selecao_cnpj]
-    selecao_data = df_cnpj['DT_REFER'] == date
-    df_cnpj = df_cnpj[selecao_data].reset_index()
 
-    if not df_cnpj.empty:
-      df_cnpj = download_remaining_data(df_cnpj)
-      companyName = df_cnpj['DENOM_CIA'].unique()[0]
-      ticker = df_cnpj.iloc[0].TICKER
-      df_cnpj.set_index('CD_CONTA', inplace=True)
+    for cnpj in df['CNPJ_CIA'].unique()[:20]:
+      selecao_cnpj = df['CNPJ_CIA'] == cnpj
+      df_cnpj = df[selecao_cnpj]
+      selecao_data = df_cnpj['DT_REFER'] == itr_date
+      df_cnpj = df_cnpj[selecao_data].reset_index()
 
-      row = {
+      if not df_cnpj.empty:
+        df_cnpj = download_remaining_data(df_cnpj)
+        companyName = df_cnpj.iloc[0].DENOM_CIA
+        ticker = df_cnpj.iloc[0].TICKER
+        df_cnpj.set_index('CD_CONTA', inplace=True)
+
+        quote_price = 0
+        try:
+          quote_price = df_quotes['Adj Close'][f'{ticker}.SA'].loc[itr_date]
+        except KeyError:
+          quote_price = 0
+
+        df_cnpj['QUOTE_PRICE'] = quote_price
+
+        row = {
           'cnpj': cnpj,
           'company': companyName,
-          'date': date,
+          'date': itr_date,
           'ticker': ticker,
-          'price': get_quote_value(df_cnpj),
-          'address': df_cnpj['address'].unique()[0],
-          'city': df_cnpj['city'].unique()[0],
           'fiftyTwoWeekHigh': df_cnpj['fiftyTwoWeekHigh'].unique()[0],
           'fiftyTwoWeekLow': df_cnpj['fiftyTwoWeekLow'].unique()[0],
           'zip': df_cnpj['zip'].unique()[0],
           'country': df_cnpj['country'].unique()[0],
           'state': df_cnpj['state'].unique()[0],
+          'price': get_quote_value(df_cnpj),
           'dy': get_dividendo_yield(df_cnpj),
           'pl': get_pl(df_cnpj),
           'pvp': get_pvp(df_cnpj),
@@ -517,11 +524,12 @@ def process_indicators(year):
           'roe': get_roe(df_cnpj),
           'roa': get_roa(df_cnpj),
           'roic': get_roic(df_cnpj),
-      }
-      print(f'Empresa {cnpj} carregada')
-      df_indicators = df_indicators.append(row, ignore_index=True)
+        }
+        print(f'Empresa {cnpj} carregada')
+        df_indicators = df_indicators.append(row, ignore_index=True)
 
-  df_indicators.to_csv(indicators_path)
+    df_indicators.to_csv(f'./data/processed/indicators{itr_date}.csv')
+  merge()
 
 if __name__ == "__main__":
   process_indicators()

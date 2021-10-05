@@ -12,11 +12,11 @@ def get_itr_names():
 def get_quotes_path():
   return './data/processed/quotes.csv'
 
-def get_processed_path():
-  return './data/processed/processed.csv'
+def get_processed_path(year):
+  return f'./data/processed/processed{year}.csv'
 
-def get_indicators_path():
-  return './data/processed/indicators.csv'
+def get_indicators_path(year):
+  return f'./data/processed/indicators{year}.csv'
 
 def get_download_path():
   return './data/downloaded'
