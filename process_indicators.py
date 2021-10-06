@@ -432,7 +432,7 @@ def download_remaining_data(df):
   ticker = df.iloc[0].TICKER
   result = yf.Ticker(f'{ticker}.SA')
 
-  # df['QUOTE_PRICE'] = get_value_from_result(result, 'currentPrice')
+  df['QUOTE_PRICE'] = get_value_from_result(result, 'currentPrice')
   df['EV'] = get_value_from_result(result, 'enterpriseValue')
   df['QUOTES_QUANTITY'] = get_value_from_result(result, 'sharesOutstanding')
   df['DY'] = get_value_from_result(result, 'dividendYield')
@@ -450,22 +450,13 @@ def process_indicators(year):
   indicators_path = get_indicators_path(year)
   df = pd.read_csv(path)
   df.dropna(inplace=True)
-  tickers = df['TICKER'].unique()
-  df_quotes = get_quotes_df(tickers)
+  # tickers = df['TICKER'].unique()
+  # df_quotes = get_quotes_df(tickers)
 
   itr_dates = [ f'{year}-09-30', f'{year}-06-30', f'{year}-03-31',]
   
   for itr_date in itr_dates:
-    # df_date = df[df['DT_REFER'] == itr_date]
-    
-    # if not df_date.empty:
-    #   date = df_date['DT_REFER'].unique()[0]
-    #   break
-
     df_indicators = pd.DataFrame()
-    # print(date)
-    
-
 
     for cnpj in df['CNPJ_CIA'].unique()[:20]:
       selecao_cnpj = df['CNPJ_CIA'] == cnpj
@@ -479,13 +470,13 @@ def process_indicators(year):
         ticker = df_cnpj.iloc[0].TICKER
         df_cnpj.set_index('CD_CONTA', inplace=True)
 
-        quote_price = 0
-        try:
-          quote_price = df_quotes['Adj Close'][f'{ticker}.SA'].loc[itr_date]
-        except KeyError:
-          quote_price = 0
+        # quote_price = 0
+        # try:
+        #   quote_price = df_quotes['Adj Close'][f'{ticker}.SA'].loc[itr_date]
+        # except KeyError:
+        #   quote_price = 0
 
-        df_cnpj['QUOTE_PRICE'] = quote_price
+        # df_cnpj['QUOTE_PRICE'] = quote_price
 
         row = {
           'cnpj': cnpj,

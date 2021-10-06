@@ -71,16 +71,16 @@ def init():
   # year = datetime.datetime.today().year
 
   # Buscar arquivo de cotas, localizado em ./data/processed/quotes.csv
-  # try:
-  #   pd.read_csv(quotes_path)
-  #   get_remaining_quotes()
-  # except FileNotFoundError:
-  #   # Arquivo não existe 
-  #   generate_fresh_quotes()
+  try:
+    pd.read_csv(quotes_path)
+    get_remaining_quotes()
+  except FileNotFoundError:
+    # Arquivo não existe 
+    generate_fresh_quotes()
 
-  for year in ['2021']:
-    download_itrs(year)
-    process(year)
+  # for year in ['2021']:
+  #   download_itrs(year)
+  #   process(year)
 
 
 if __name__ == "__main__":
