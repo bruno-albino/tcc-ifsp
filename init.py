@@ -1,5 +1,6 @@
 import datetime
 import pandas as pd
+from process_indicators import process_indicators
 import yfinance as yf
 from utils import get_quotes_path
 from download import download_instrument_consolidated, download_itrs
@@ -78,9 +79,10 @@ def init():
     # Arquivo não existe 
     generate_fresh_quotes()
 
-  # for year in ['2021']:
-  #   download_itrs(year)
-  #   process(year)
+  for year in ['2021']:
+    download_itrs(year)
+    process(year)
+    process_indicators(year)
 
 
 if __name__ == "__main__":
