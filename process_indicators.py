@@ -82,8 +82,10 @@ def get_p_ebit(df):
   acao_valor = get_quote_value(df)
   vl_quotes_quantity = get_quotes_quantity(df)
 
+  print(acao_valor, vl_quotes_quantity, vl_ebit)
   if vl_ebit == 0 or vl_quotes_quantity == 0:
     return vl_ebit
+    # 0,27774474518240481755860499470724
 
   vl_p_ebit = acao_valor / (vl_ebit / vl_quotes_quantity)
   return vl_p_ebit
@@ -180,8 +182,8 @@ def get_ev_ebitda(df):
   vl_ebitda = get_ebitda(df)
   vl_ev = get_ev(df)
 
-  if vl_ev == 0:
-    return vl_ev
+  if vl_ev == 0 or vl_ebitda == 0:
+    return 0
 
   vl_ev_ebitda = vl_ev / vl_ebitda
   return vl_ev_ebitda
@@ -340,7 +342,7 @@ def get_divida_liquida(df):
   # Aplicações Financeiras Avaliadas a Valor Justo através do Resultado (1.02.01.01)
   # Dívida Líquida = Dívida Bruta - (Caixa e Equivalente de Caixa + Aplicações Finaceiras + 1.02.01.01)
   cd_caixa_e_equivalente_de_caixa = '1.01.01'
-  cd_aplicacoes_financeiras = '1.01.01'
+  cd_aplicacoes_financeiras = '1.01.02'
   cd_aplicacoes_financeiras_avaliadas_a_valor_justo = '1.02.01.01'
 
   vl_caixa_e_equivalente_de_caixa = get_account_value_by_code(df, cd_caixa_e_equivalente_de_caixa)
@@ -447,7 +449,7 @@ def download_remaining_data(df):
 def process_indicators(year):
   print('Start process indicators')
   path = get_processed_path(year)
-  indicators_path = get_indicators_path(year)
+  # indicators_path = get_indicators_path(year)
   df = pd.read_csv(path)
   df.dropna(inplace=True)
   # tickers = df['TICKER'].unique()
@@ -457,8 +459,9 @@ def process_indicators(year):
   
   for itr_date in itr_dates:
     df_indicators = pd.DataFrame()
+    print(itr_date)
 
-    for cnpj in df['CNPJ_CIA'].unique()[:20]:
+    for cnpj in df['CNPJ_CIA'].unique()[3:4]:
       selecao_cnpj = df['CNPJ_CIA'] == cnpj
       df_cnpj = df[selecao_cnpj]
       selecao_data = df_cnpj['DT_REFER'] == itr_date
@@ -519,7 +522,8 @@ def process_indicators(year):
         print(f'Empresa {cnpj} carregada')
         df_indicators = df_indicators.append(row, ignore_index=True)
 
-    df_indicators.to_csv(f'./data/processed/indicators{itr_date}.csv')
+    if not df_indicators.empty:
+      df_indicators.to_csv(f'./data/processed/indicators-{itr_date}.csv', index=False)
   merge()
 
 if __name__ == "__main__":

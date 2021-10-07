@@ -13,10 +13,10 @@ def get_quotes_path():
   return './data/processed/quotes.csv'
 
 def get_processed_path(year):
-  return f'./data/processed/processed{year}.csv'
+  return f'./data/processed/processed-{year}.csv'
 
 def get_indicators_path(year):
-  return f'./data/processed/indicators{year}.csv'
+  return f'./data/processed/indicators-{year}.csv'
 
 def get_download_path():
   return './data/downloaded'

@@ -1,8 +1,6 @@
-from download import download_instrument_consolidated
 from utils import get_download_path, get_itr_names, get_itrs_path, get_processed_path
 import numpy as np
 import pandas as pd
-from process_indicators import process_indicators
 from pathlib import Path
 from tqdm import tqdm
 
@@ -62,8 +60,7 @@ def clean_itr(df):
                         'CD_CONTA']).last().reset_index()
 
     # Remove unused columns
-    temp = temp[['CNPJ_CIA', 'TICKER', 'DT_REFER', 'DENOM_CIA', 'CD_CVM',
-                 'CD_CONTA', 'VL_CONTA']]
+    temp = temp[['CNPJ_CIA', 'TICKER', 'DT_REFER', 'DENOM_CIA', 'CD_CONTA', 'VL_CONTA']]
 
     # (Hopefully) Remove the remaining duplicated rows
     temp = temp.drop_duplicates(keep='last', ignore_index=True)
@@ -105,5 +102,3 @@ def process(year):
     processed_df = processed_df.append(df_clean)   
     processed_df.to_csv(processed_path)
     print(f'Clean data saved in {processed_path} !')
-
-    process_indicators(year)

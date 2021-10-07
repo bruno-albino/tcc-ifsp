@@ -3,7 +3,7 @@
 # CRON_TO_RUN_EVERY_4TH_MONTH = '0 0 1 4 *'
 # CRON_TO_RUN_EVERY_7TH_MONTH = '0 0 1 7 *'
 import time
-import requests
+import requests_cache
 import zipfile
 import io
 import os
@@ -16,6 +16,7 @@ from pathlib import Path
 basename = 'itr_cia_aberta_'
 path = get_itrs_path()
 download_path = get_download_path()
+session = requests_cache.CachedSession('itrs_download_cache')
 
 def download_instrument_consolidated():
   delete_consolidate_files()
@@ -48,7 +49,7 @@ def download_itrs(year):
     filenames.append(basename + name + '_con_' + year + '.csv')
 
   url = f'http://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_{year}.zip'
-  res = requests.get(url)
+  res = session.get(url)
   z = zipfile.ZipFile(io.BytesIO(res.content))
 
   for filename in filenames:

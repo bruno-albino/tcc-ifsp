@@ -7,21 +7,21 @@ dir = Path('./data/processed')
 
 def merge_processed():
   df = pd.DataFrame()
-  files_to_read = [f for f in list(dir.glob('processed*.csv'))]
+  files_to_read = [f for f in list(dir.glob('processed-*.csv'))]
 
-  for file in tqdm(files_to_read, dynamic_ncols=True):
+  for file in tqdm(files_to_read):
     df = df.append(pd.read_csv(file))
 
-  df.to_csv('./data/processed/processed.csv')
+  df.to_csv('./data/processed/processed.csv', index=False)
 
 def merge_indicators():
   df = pd.DataFrame()
-  files_to_read = [f for f in list(dir.glob('indicators*.csv'))]
+  files_to_read = [f for f in list(dir.glob('indicators-*.csv'))]
 
-  for file in tqdm(files_to_read, dynamic_ncols=True):
+  for file in tqdm(files_to_read):
     df = df.append(pd.read_csv(file))
 
-  df.to_csv('./data/processed/indicators.csv')
+  df.to_csv('./data/processed/indicators.csv', index=False)
 
 # def create_full_quotes():
 #   df = pd.read_csv('./data/processed/indicators.csv')
