@@ -3,8 +3,9 @@ import pandas as pd
 from process_indicators import process_indicators
 import yfinance as yf
 from utils import get_quotes_path
-from download import download_instrument_consolidated, download_itrs
+from download import download_itrs
 from main import load_itr, process
+from merge import merge
 
 quotes_path = get_quotes_path()
 
@@ -79,11 +80,12 @@ def init():
     # Arquivo não existe 
     generate_fresh_quotes()
 
-  for year in ['2021']:
+  for year in ['2015', '2016', '2017', '2018', '2019', '2020', '2021']:
     download_itrs(year)
     process(year)
     process_indicators(year)
 
+  merge()
 
 if __name__ == "__main__":
   init()

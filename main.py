@@ -93,9 +93,9 @@ def process(year):
     df = load_itr()
 
     # print('Downloading account dictionary...')
-    # df_accounts = get_accounts(df)
-    # df_accounts.to_csv('./data/processed/accounts.csv')
-    # print(f'Accouynt data saved in ./data/processed/accounts.csv!')
+    df_accounts = get_accounts(df)
+    df_accounts.to_csv('./data/processed/accounts.csv')
+    print(f'Accouynt data saved in ./data/processed/accounts.csv!')
 
     df_clean = clean_itr(df)
     processed_df = pd.DataFrame()

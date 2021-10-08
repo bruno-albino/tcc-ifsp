@@ -1,6 +1,4 @@
-from teste import get_quotes_df
-from utils import get_indicators_path, get_processed_path, get_quotes_path
-from merge import merge
+from utils import  get_processed_path
 import pandas as pd
 import yfinance as yf
 
@@ -449,82 +447,68 @@ def download_remaining_data(df):
 def process_indicators(year):
   print('Start process indicators')
   path = get_processed_path(year)
-  # indicators_path = get_indicators_path(year)
   df = pd.read_csv(path)
   df.dropna(inplace=True)
-  # tickers = df['TICKER'].unique()
-  # df_quotes = get_quotes_df(tickers)
 
   itr_dates = [ f'{year}-09-30', f'{year}-06-30', f'{year}-03-31',]
   
   for itr_date in itr_dates:
     df_indicators = pd.DataFrame()
-    print(itr_date)
 
-    for cnpj in df['CNPJ_CIA'].unique()[3:4]:
+    for cnpj in df['CNPJ_CIA'].unique()[:2]:
       selecao_cnpj = df['CNPJ_CIA'] == cnpj
       df_cnpj = df[selecao_cnpj]
       selecao_data = df_cnpj['DT_REFER'] == itr_date
       df_cnpj = df_cnpj[selecao_data].reset_index()
 
-      if not df_cnpj.empty:
-        df_cnpj = download_remaining_data(df_cnpj)
-        companyName = df_cnpj.iloc[0].DENOM_CIA
-        ticker = df_cnpj.iloc[0].TICKER
-        df_cnpj.set_index('CD_CONTA', inplace=True)
+      if df_cnpj.empty:
+        continue
 
-        # quote_price = 0
-        # try:
-        #   quote_price = df_quotes['Adj Close'][f'{ticker}.SA'].loc[itr_date]
-        # except KeyError:
-        #   quote_price = 0
+      df_cnpj = download_remaining_data(df_cnpj)
+      companyName = df_cnpj.iloc[0].DENOM_CIA
+      ticker = df_cnpj.iloc[0].TICKER
+      df_cnpj.set_index('CD_CONTA', inplace=True)
 
-        # df_cnpj['QUOTE_PRICE'] = quote_price
-
-        row = {
-          'cnpj': cnpj,
-          'company': companyName,
-          'date': itr_date,
-          'ticker': ticker,
-          'fiftyTwoWeekHigh': df_cnpj['fiftyTwoWeekHigh'].unique()[0],
-          'fiftyTwoWeekLow': df_cnpj['fiftyTwoWeekLow'].unique()[0],
-          'zip': df_cnpj['zip'].unique()[0],
-          'country': df_cnpj['country'].unique()[0],
-          'state': df_cnpj['state'].unique()[0],
-          'price': get_quote_value(df_cnpj),
-          'dy': get_dividendo_yield(df_cnpj),
-          'pl': get_pl(df_cnpj),
-          'pvp': get_pvp(df_cnpj),
-          'evebitda': get_ev_ebitda(df_cnpj),
-          'evebit': get_ev_ebit(df_cnpj),
-          'pebitda': get_p_ebitda(df_cnpj),
-          'pebit': get_p_ebit(df_cnpj),
-          'vpa': get_vpa(df_cnpj),
-          'pativo': get_p_ativo(df_cnpj),
-          'lpa': get_lpa(df_cnpj),
-          'psr': get_psr(df_cnpj),
-          'pcapgiro': get_p_cap_giro(df_cnpj),
-          'pativcirqliq': get_p_ativo_circulante_liquido(df_cnpj),
-          'dlpl': get_div_liquida_pl(df_cnpj),
-          'dlebit': get_div_liquida_ebit(df_cnpj),
-          'dlebitda': get_div_liquida_ebitda(df_cnpj),
-          'plativos': get_pl_ativos(df_cnpj),
-          'passivosativos': get_passivos_ativos(df_cnpj),
-          'liqcorrente': get_liq_corrente(df_cnpj),
-          'mbruta': get_m_bruta(df_cnpj),
-          'mebit': get_m_ebit(df_cnpj),
-          'mebitda': get_m_ebitda(df_cnpj),
-          'mliquida': get_m_liquida(df_cnpj),
-          'roe': get_roe(df_cnpj),
-          'roa': get_roa(df_cnpj),
-          'roic': get_roic(df_cnpj),
-        }
-        print(f'Empresa {cnpj} carregada')
-        df_indicators = df_indicators.append(row, ignore_index=True)
+      row = {
+        'cnpj': cnpj,
+        'company': companyName,
+        'date': itr_date,
+        'ticker': ticker,
+        'fiftyTwoWeekHigh': df_cnpj['fiftyTwoWeekHigh'].unique()[0],
+        'fiftyTwoWeekLow': df_cnpj['fiftyTwoWeekLow'].unique()[0],
+        'zip': df_cnpj['zip'].unique()[0],
+        'country': df_cnpj['country'].unique()[0],
+        'state': df_cnpj['state'].unique()[0],
+        'price': get_quote_value(df_cnpj),
+        'dy': get_dividendo_yield(df_cnpj),
+        'pl': get_pl(df_cnpj),
+        'pvp': get_pvp(df_cnpj),
+        'evebitda': get_ev_ebitda(df_cnpj),
+        'evebit': get_ev_ebit(df_cnpj),
+        'pebitda': get_p_ebitda(df_cnpj),
+        'pebit': get_p_ebit(df_cnpj),
+        'vpa': get_vpa(df_cnpj),
+        'pativo': get_p_ativo(df_cnpj),
+        'lpa': get_lpa(df_cnpj),
+        'psr': get_psr(df_cnpj),
+        'pcapgiro': get_p_cap_giro(df_cnpj),
+        'pativcirqliq': get_p_ativo_circulante_liquido(df_cnpj),
+        'dlpl': get_div_liquida_pl(df_cnpj),
+        'dlebit': get_div_liquida_ebit(df_cnpj),
+        'dlebitda': get_div_liquida_ebitda(df_cnpj),
+        'plativos': get_pl_ativos(df_cnpj),
+        'passivosativos': get_passivos_ativos(df_cnpj),
+        'liqcorrente': get_liq_corrente(df_cnpj),
+        'mbruta': get_m_bruta(df_cnpj),
+        'mebit': get_m_ebit(df_cnpj),
+        'mebitda': get_m_ebitda(df_cnpj),
+        'mliquida': get_m_liquida(df_cnpj),
+        'roe': get_roe(df_cnpj),
+        'roa': get_roa(df_cnpj),
+        'roic': get_roic(df_cnpj),
+      }
+      print(f'Empresa {cnpj} carregada')
+      df_indicators = df_indicators.append(row, ignore_index=True)
 
     if not df_indicators.empty:
       df_indicators.to_csv(f'./data/processed/indicators-{itr_date}.csv', index=False)
-  merge()
-
-if __name__ == "__main__":
-  process_indicators()

@@ -1,5 +1,4 @@
 import pandas as pd
-from teste import get_quotes_df
 from tqdm import tqdm
 from pathlib import Path
 
@@ -23,16 +22,9 @@ def merge_indicators():
 
   df.to_csv('./data/processed/indicators.csv', index=False)
 
-# def create_full_quotes():
-#   df = pd.read_csv('./data/processed/indicators.csv')
-#   tickers = df.ticker.unique()
-#   df_quotes = get_quotes_df(tickers)['Adj Close']
-#   df_quotes.to_csv('./data/processed/quotes.csv')
-
 def merge():
   merge_processed()
   merge_indicators()
-  # create_full_quotes()
 
 if __name__ == "__main__":
   merge()
