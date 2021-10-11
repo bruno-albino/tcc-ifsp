@@ -13,3 +13,4 @@ meta_data/*.txt
 *.ipynb
 data/processed/.ipynb_checkpoints/
 etc/
+itrs_download_cache.sqlite
