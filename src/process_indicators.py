@@ -455,7 +455,7 @@ def process_indicators(year):
   for itr_date in itr_dates:
     df_indicators = pd.DataFrame()
 
-    for cnpj in df['CNPJ_CIA'].unique()[:2]:
+    for cnpj in df['CNPJ_CIA'].unique():
       selecao_cnpj = df['CNPJ_CIA'] == cnpj
       df_cnpj = df[selecao_cnpj]
       selecao_data = df_cnpj['DT_REFER'] == itr_date
