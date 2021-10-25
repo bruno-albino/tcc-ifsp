@@ -80,7 +80,7 @@ def init():
     # Arquivo não existe 
     generate_fresh_quotes()
 
-  for year in ['2018', '2019', '2020', '2021']:
+  for year in ['2015', '2016', '2017', '2018', '2019', '2020', '2021']:
     download_itrs(year)
     process(year)
     process_indicators(year)
