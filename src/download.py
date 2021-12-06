@@ -29,7 +29,7 @@ def download_instrument_consolidated():
     today = today - timedelta(days=diff)
 
   options = webdriver.ChromeOptions()
-  prefs = {"download.default_directory" : os.path.join(pathlib.Path(__file__).parent.resolve(), 'data', 'downloaded')}
+  prefs = {"download.default_directory" : os.path.join(pathlib.Path(__file__).parent.resolve(), '..', 'data', 'downloaded')}
   options.add_experimental_option("prefs",prefs)
   options.headless = True
 
@@ -38,8 +38,20 @@ def download_instrument_consolidated():
   time.sleep(5)
   driver.find_element_by_link_text("Baixar arquivo completo").click()
   time.sleep(5)
+  download_wait()
   driver.quit()
 
+def download_wait():
+  seconds = 0
+  dl_wait = True
+  while dl_wait:
+      time.sleep(1)
+      dl_wait = False
+      for fname in os.listdir(os.path.join(pathlib.Path(__file__).parent.resolve(), '..', 'data', 'downloaded')):
+          if fname.endswith('.crdownload'):
+              dl_wait = True
+      seconds += 1
+  return seconds
 
 def download_itrs(year):
   clear_itrs_folder()
